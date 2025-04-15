@@ -8,7 +8,7 @@ package org.selvin.model;
  *
  * @author Selvi
  */
-public class EmpleadoModel {
+public class EmpleadoModel extends LoginModel {
 
     private String nombre;
     private String tipo; // administrador o mecanico
@@ -36,6 +36,5 @@ public class EmpleadoModel {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-    
-    
+
 }

@@ -6,7 +6,10 @@ package org.selvin.main;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import org.selvin.controller.LoginController;
+import org.selvin.controller.RegistrarseController;
 import org.selvin.view.LoginView;
+import org.selvin.view.RegistrarseView;
 
 /**
  *
@@ -19,18 +22,32 @@ public class Main {
      */
     private JFrame ventanaActual;
 
-    private LoginView loginView;
+    private LoginController loginController;
+    private RegistrarseController registrarseController;
 
+    private LoginView loginView;
+    private RegistrarseView registrarseView;
+    
     public Main() {
-        loginView = new LoginView();
-        
+
+        registrarseController = new RegistrarseController();
+
+        loginController = new LoginController(registrarseController);
+
+        loginView = new LoginView(this, loginController);
+        registrarseView = new RegistrarseView(this, registrarseController);
         
         mostrarLoginView();
     }
 
-    private void mostrarLoginView() {
+    public void mostrarLoginView() {
         cambiarVentana(loginView);
         loginView.setLocationRelativeTo(null);
+    }
+
+    public void mostrarRegistrarView() {
+        cambiarVentana(registrarseView);
+        registrarseView.setLocationRelativeTo(null);
     }
 
     private void cambiarVentana(Ventana newVentana) {

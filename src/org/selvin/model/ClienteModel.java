@@ -4,29 +4,30 @@
  */
 package org.selvin.model;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Selvi
  */
-public class ClienteModel implements Serializable  {
- 
+public class ClienteModel extends LoginModel {
+
     private String dpi;
     private String nombreCompleto;
-    private String usuario;
-    private String contraseña;
     private String tipoCliente; // normal u oro
     private VehiculoModel[] vehiculos;
 
     public ClienteModel() {
     }
 
-    public ClienteModel(String dpi, String nombreCompleto, String usuario, String contraseña, String tipoCliente, VehiculoModel[] vehiculos) {
+    public ClienteModel(String dpi, String nombreCompleto, String tipoCliente) {
         this.dpi = dpi;
         this.nombreCompleto = nombreCompleto;
-        this.usuario = usuario;
-        this.contraseña = contraseña;
+        this.tipoCliente = tipoCliente;
+    }
+
+    
+    public ClienteModel(String dpi, String nombreCompleto, String tipoCliente, VehiculoModel[] vehiculos) {
+        this.dpi = dpi;
+        this.nombreCompleto = nombreCompleto;
         this.tipoCliente = tipoCliente;
         this.vehiculos = vehiculos;
     }
@@ -47,22 +48,6 @@ public class ClienteModel implements Serializable  {
         this.nombreCompleto = nombreCompleto;
     }
 
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getContraseña() {
-        return contraseña;
-    }
-
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
-    }
-
     public String getTipoCliente() {
         return tipoCliente;
     }
@@ -78,6 +63,5 @@ public class ClienteModel implements Serializable  {
     public void setVehiculos(VehiculoModel[] vehiculos) {
         this.vehiculos = vehiculos;
     }
-    
-    
+
 }
