@@ -1,0 +1,92 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package org.selvin.model;
+
+import java.time.LocalDateTime;
+
+/**
+ *
+ * @author Selvi
+ */
+public class OrdenTrabajoModel {
+
+    private int numeroOrden;
+    private VehiculoModel vehiculo;
+    private ClienteModel cliente;
+    private ServicioModel servicio;
+    private LocalDateTime fecha;
+    private EmpleadoModel mecanico;
+    private String estado; // espera, en servicio, listo
+
+    public OrdenTrabajoModel() {
+    }
+
+    public OrdenTrabajoModel(int numeroOrden, VehiculoModel vehiculo, ClienteModel cliente, ServicioModel servicio, LocalDateTime fecha, EmpleadoModel mecanico, String estado) {
+        this.numeroOrden = numeroOrden;
+        this.vehiculo = vehiculo;
+        this.cliente = cliente;
+        this.servicio = servicio;
+        this.fecha = fecha;
+        this.mecanico = mecanico;
+        this.estado = estado;
+    }
+
+    public int getNumeroOrden() {
+        return numeroOrden;
+    }
+
+    public void setNumeroOrden(int numeroOrden) {
+        this.numeroOrden = numeroOrden;
+    }
+
+    public VehiculoModel getVehiculo() {
+        return vehiculo;
+    }
+
+    public void setVehiculo(VehiculoModel vehiculo) {
+        this.vehiculo = vehiculo;
+    }
+
+    public ClienteModel getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(ClienteModel cliente) {
+        this.cliente = cliente;
+    }
+
+    public ServicioModel getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(ServicioModel servicio) {
+        this.servicio = servicio;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
+
+    public EmpleadoModel getMecanico() {
+        return mecanico;
+    }
+
+    public void setMecanico(EmpleadoModel mecanico) {
+        this.mecanico = mecanico;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+}
