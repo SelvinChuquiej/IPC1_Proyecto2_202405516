@@ -13,6 +13,7 @@ import org.selvin.view.AdminMainView;
 import org.selvin.view.ClienteMainView;
 import org.selvin.view.LoginView;
 import org.selvin.view.RegistrarseView;
+import org.selvin.view.RepuestosVerView;
 import org.selvin.view.RepuestosView;
 
 /**
@@ -35,6 +36,7 @@ public class Main {
     private AdminMainView adminMainView;
     private ClienteMainView clienteMainView;
     private RepuestosView repuestosView;
+    private RepuestosVerView repuestosVerView;
     
     public Main() {
 
@@ -47,6 +49,7 @@ public class Main {
         adminMainView = new AdminMainView(this);
         clienteMainView = new ClienteMainView(this);
         repuestosView = new RepuestosView(this, repuestosController);
+        repuestosVerView = new RepuestosVerView(this, repuestosController);
         
         //mostrarLoginView();
         mostrarRepuestosView();
@@ -75,6 +78,12 @@ public class Main {
     public void mostrarRepuestosView(){
         cambiarVentana(repuestosView);
         repuestosView.setLocationRelativeTo(null); 
+    }
+    
+    public void mostrarRepuestosVerView(){
+        cambiarVentana(repuestosVerView);
+        repuestosVerView.setLocationRelativeTo(null);
+        repuestosVerView.cargarRepuestos();
     }
 
     private void cambiarVentana(Ventana newVentana) {

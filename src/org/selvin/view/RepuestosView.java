@@ -66,6 +66,11 @@ public class RepuestosView extends javax.swing.JFrame implements Ventana {
         jButton4.setText("Eliminar");
 
         jButton5.setText("Ver");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         txtRuta.setEditable(false);
 
@@ -123,6 +128,12 @@ public class RepuestosView extends javax.swing.JFrame implements Ventana {
         repuestosController.seleccionarArchivo(txtRuta); 
         repuestosController.mostrarRepuestos();
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        main.mostrarRepuestosVerView();
+        this.ocultar();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments

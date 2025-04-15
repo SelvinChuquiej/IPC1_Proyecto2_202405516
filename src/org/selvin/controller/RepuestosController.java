@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Vector;
 import javax.swing.JFileChooser;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 import org.selvin.model.RepuestoModel;
 import org.selvin.view.RepuestosView;
 
@@ -26,6 +28,7 @@ public class RepuestosController {
     private RepuestosView repuestosView;
     public Vector<RepuestoModel> repuestos = new Vector<RepuestoModel>();
     private int id = 1;
+    private DefaultTableModel dtm;
 
     public RepuestosController() {
     }
@@ -97,6 +100,22 @@ public class RepuestosController {
             System.out.println("existencias: " + c.getExistencias());
             System.out.println("precio: " + c.getPrecio());
             System.out.println("--------------------");
+        }
+    }
+
+    public void cargarRepuestos(JTable tblRepuestos) {
+        dtm = (DefaultTableModel) tblRepuestos.getModel();
+        dtm.setRowCount(0);
+        for (RepuestoModel r : repuestos) {
+            Object[] datos = {
+                r.getId(),
+                r.getNombre(),
+                r.getMarca(),
+                r.getModelo(),
+                r.getExistencias(),
+                r.getPrecio()
+            };
+            dtm.addRow(datos);
         }
     }
 }
