@@ -19,19 +19,19 @@ public class LoginController {
         this.registrarseController = registrarseController;
     }
 
-    public boolean login(String usuario, String contrasena) {
+    public Object login(String usuario, String contrasena) {
         for (EmpleadoModel empleado : registrarseController.getEmpleados()) {
             if (empleado.getUsuario().equals(usuario) && empleado.getContrasena().equals(contrasena)) {
-                return true;
+                return empleado;
             }
         }
 
         for (ClienteModel cliente : registrarseController.getClientes()) {
             if (cliente.getUsuario().equals(usuario) && cliente.getContrasena().equals(contrasena)) {
-                return true;
+                return cliente;
             }
         }
 
-        return false;
+        return null;
     }
 }

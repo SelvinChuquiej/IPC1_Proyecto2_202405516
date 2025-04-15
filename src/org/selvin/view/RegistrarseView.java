@@ -20,7 +20,7 @@ public class RegistrarseView extends javax.swing.JFrame implements Ventana {
      */
     private Main main;
     private RegistrarseController registrarseController;
-    
+
     public RegistrarseView(Main main, RegistrarseController registrarseController) {
         this.main = main;
         this.registrarseController = registrarseController;
@@ -140,6 +140,11 @@ public class RegistrarseView extends javax.swing.JFrame implements Ventana {
         boolean registroExitoso = registrarseController.addClientes(usuario, contrasena, dpi, nombre);
         if (registroExitoso) {
             JOptionPane.showMessageDialog(null, "Registro realizado correctamente");
+
+            txtDPI.setText("");
+            txtNombre.setText("");
+            txtUsuario.setText("");
+            txtContrasena.setText("");
         } else {
             JOptionPane.showMessageDialog(null, "Error al registrar datos ya existentes dentro del sistema", "Error", JOptionPane.ERROR_MESSAGE);
         }

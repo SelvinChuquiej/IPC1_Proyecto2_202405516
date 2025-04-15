@@ -42,7 +42,7 @@ public class RegistrarseController {
         clientes.add(cliente);
         return true;
     }
-
+    
     public Vector<EmpleadoModel> getEmpleados() {
         return empleados;
     }

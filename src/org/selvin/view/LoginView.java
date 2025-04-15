@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 import org.selvin.controller.LoginController;
 import org.selvin.main.Main;
 import org.selvin.main.Ventana;
+import org.selvin.model.ClienteModel;
+import org.selvin.model.EmpleadoModel;
 
 /**
  *
@@ -126,9 +128,23 @@ public class LoginView extends javax.swing.JFrame implements Ventana {
             return;
         }
 
-        boolean loginExitoso = loginController.login(usuario, contrasena);
-        if (loginExitoso) {
+        Object loginExitoso = loginController.login(usuario, contrasena);
+        if (loginExitoso instanceof Object) {
+
+            txtUsuario.setText("");
+            txtContrasena.setText("");
+
             JOptionPane.showMessageDialog(null, "Inicio de Sesion realizado correctamente");
+            if (loginExitoso instanceof EmpleadoModel empleado) {
+                main.mostrarAdminMainView();
+                this.ocultar();
+                return;
+            }
+            if (loginExitoso instanceof ClienteModel cliente) {
+                main.mostrarClienteMainView();
+                this.ocultar();
+                return;
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
         }
