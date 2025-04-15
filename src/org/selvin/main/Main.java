@@ -8,10 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import org.selvin.controller.LoginController;
 import org.selvin.controller.RegistrarseController;
+import org.selvin.controller.RepuestosController;
 import org.selvin.view.AdminMainView;
 import org.selvin.view.ClienteMainView;
 import org.selvin.view.LoginView;
 import org.selvin.view.RegistrarseView;
+import org.selvin.view.RepuestosView;
 
 /**
  *
@@ -26,24 +28,28 @@ public class Main {
 
     private LoginController loginController;
     private RegistrarseController registrarseController;
+    private RepuestosController repuestosController;
 
     private LoginView loginView;
     private RegistrarseView registrarseView;
     private AdminMainView adminMainView;
     private ClienteMainView clienteMainView;
+    private RepuestosView repuestosView;
     
     public Main() {
 
         registrarseController = new RegistrarseController();
-
+        repuestosController = new RepuestosController();
         loginController = new LoginController(registrarseController);
 
         loginView = new LoginView(this, loginController);
         registrarseView = new RegistrarseView(this, registrarseController);
         adminMainView = new AdminMainView(this);
         clienteMainView = new ClienteMainView(this);
+        repuestosView = new RepuestosView(this, repuestosController);
         
-        mostrarLoginView();
+        //mostrarLoginView();
+        mostrarRepuestosView();
     }
 
     public void mostrarLoginView() {
@@ -64,6 +70,11 @@ public class Main {
     public void mostrarClienteMainView(){
         cambiarVentana(clienteMainView);
         clienteMainView.setLocationRelativeTo(null);
+    }
+    
+    public void mostrarRepuestosView(){
+        cambiarVentana(repuestosView);
+        repuestosView.setLocationRelativeTo(null); 
     }
 
     private void cambiarVentana(Ventana newVentana) {
