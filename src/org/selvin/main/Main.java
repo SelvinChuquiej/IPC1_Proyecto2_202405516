@@ -30,26 +30,26 @@ public class Main {
     private LoginController loginController;
     private RegistrarseController registrarseController;
     private RepuestosController repuestosController;
-
+    
     private LoginView loginView;
     private RegistrarseView registrarseView;
     private AdminMainView adminMainView;
-    private ClienteMainView clienteMainView;
+    private ClienteMainView clienteMainView; 
     private RepuestosView repuestosView;
     private RepuestosVerView repuestosVerView;
     
     public Main() {
 
         registrarseController = new RegistrarseController();
-        repuestosController = new RepuestosController();
         loginController = new LoginController(registrarseController);
-
+        repuestosController = new RepuestosController();
+       
         loginView = new LoginView(this, loginController);
         registrarseView = new RegistrarseView(this, registrarseController);
         adminMainView = new AdminMainView(this);
-        clienteMainView = new ClienteMainView(this);
+        clienteMainView = new ClienteMainView(this); 
         repuestosView = new RepuestosView(this, repuestosController);
-        repuestosVerView = new RepuestosVerView(this, repuestosController);
+        repuestosVerView = new RepuestosVerView(this, repuestosController); 
         
         //mostrarLoginView();
         mostrarRepuestosView();
@@ -64,23 +64,23 @@ public class Main {
         cambiarVentana(registrarseView);
         registrarseView.setLocationRelativeTo(null);
     }
-    
-    public void mostrarAdminMainView(){
+
+    public void mostrarAdminMainView() {
         cambiarVentana(adminMainView);
         adminMainView.setLocationRelativeTo(null);
     }
-    
-    public void mostrarClienteMainView(){
+
+    public void mostrarClienteMainView() {
         cambiarVentana(clienteMainView);
         clienteMainView.setLocationRelativeTo(null);
     }
-    
-    public void mostrarRepuestosView(){
+
+    public void mostrarRepuestosView() {
         cambiarVentana(repuestosView);
-        repuestosView.setLocationRelativeTo(null); 
+        repuestosView.setLocationRelativeTo(null);
     }
-    
-    public void mostrarRepuestosVerView(){
+
+    public void mostrarRepuestosVerView() {
         cambiarVentana(repuestosVerView);
         repuestosVerView.setLocationRelativeTo(null);
         repuestosVerView.cargarRepuestos();

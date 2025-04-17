@@ -5,6 +5,7 @@
 package org.selvin.model;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 /**
  *
@@ -16,14 +17,14 @@ public class ServicioModel implements Serializable {
     private String nombre;
     private String marca;
     private String modelo;
-    private int[] idsRepuestos;
+    private RepuestoModel[] idsRepuestos;
     private double precioManoObra;
     private double precioTotal;
 
     public ServicioModel() {
     }
 
-    public ServicioModel(int id, String nombre, String marca, String modelo, int[] idsRepuestos, double precioManoObra, double precioTotal) {
+    public ServicioModel(int id, String nombre, String marca, String modelo, RepuestoModel[] idsRepuestos, double precioManoObra, double precioTotal) {
         this.id = id;
         this.nombre = nombre;
         this.marca = marca;
@@ -65,11 +66,11 @@ public class ServicioModel implements Serializable {
         this.modelo = modelo;
     }
 
-    public int[] getIdsRepuestos() {
+    public RepuestoModel[] getIdsRepuestos() {
         return idsRepuestos;
     }
 
-    public void setIdsRepuestos(int[] idsRepuestos) {
+    public void setIdsRepuestos(RepuestoModel[] idsRepuestos) {
         this.idsRepuestos = idsRepuestos;
     }
 

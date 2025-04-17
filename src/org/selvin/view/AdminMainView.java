@@ -11,7 +11,7 @@ import org.selvin.main.Ventana;
  *
  * @author Selvi
  */
-public class AdminMainView extends javax.swing.JFrame implements Ventana{
+public class AdminMainView extends javax.swing.JFrame implements Ventana {
 
     /**
      * Creates new form AdminMainView
@@ -20,7 +20,7 @@ public class AdminMainView extends javax.swing.JFrame implements Ventana{
 
     public AdminMainView() {
     }
-    
+
     public AdminMainView(Main main) {
         this.main = main;
         initComponents();
@@ -59,6 +59,11 @@ public class AdminMainView extends javax.swing.JFrame implements Ventana{
         });
 
         jButton3.setText("Servicios");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Clientes y Automoviles");
 
@@ -118,6 +123,11 @@ public class AdminMainView extends javax.swing.JFrame implements Ventana{
         main.mostrarRepuestosView();
         this.ocultar();
     }//GEN-LAST:event_btnRepuestosActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
