@@ -5,7 +5,6 @@
 package org.selvin.model;
 
 import java.io.Serializable;
-import java.util.Vector;
 
 /**
  *
@@ -32,6 +31,10 @@ public class ServicioModel implements Serializable {
         this.idsRepuestos = idsRepuestos;
         this.precioManoObra = precioManoObra;
         this.precioTotal = precioTotal;
+    }
+
+    public RepuestoModel[] obtenerID() {
+       return idsRepuestos;
     }
 
     public int getId() {
@@ -89,5 +92,4 @@ public class ServicioModel implements Serializable {
     public void setPrecioTotal(double precioTotal) {
         this.precioTotal = precioTotal;
     }
-
 }

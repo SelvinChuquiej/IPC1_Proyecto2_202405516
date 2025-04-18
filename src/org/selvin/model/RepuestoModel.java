@@ -77,9 +77,5 @@ public class RepuestoModel implements Serializable {
 
     public void setPrecio(double precio) {
         this.precio = precio;
-    }
-    
-     
-    
-    
+    }  
 }
