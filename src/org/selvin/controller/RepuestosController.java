@@ -23,8 +23,8 @@ import org.selvin.view.RepuestosView;
  */
 public class RepuestosController {
 
-    private RepuestosView repuestosView;
     public RepuestoModel[] repuestos = new RepuestoModel[25];
+    private RepuestosView repuestosView;
     private int id = 1;
     private int contRepuestos = 0;
     private DefaultTableModel dtm;
@@ -44,7 +44,7 @@ public class RepuestosController {
         }
     }
 
-    public void leerArchivoRepuestos(File archivo) {
+    private void leerArchivoRepuestos(File archivo) {
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
             while ((linea = br.readLine()) != null && contRepuestos < repuestos.length) {

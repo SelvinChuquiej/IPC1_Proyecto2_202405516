@@ -7,13 +7,15 @@ package org.selvin.main;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import org.selvin.controller.LoginController;
-import org.selvin.controller.RegistrarseController;
+import org.selvin.controller.RegistrarVehiculoController;
+import org.selvin.controller.RegistrarClienteController;
 import org.selvin.controller.RepuestosController;
 import org.selvin.controller.ServiciosController;
 import org.selvin.view.AdminMainView;
 import org.selvin.view.ClienteMainView;
 import org.selvin.view.LoginView;
-import org.selvin.view.RegistrarseView;
+import org.selvin.view.RegistrarVehiculoView;
+import org.selvin.view.RegistrarClienteView;
 import org.selvin.view.RepuestosVerView;
 import org.selvin.view.RepuestosView;
 import org.selvin.view.ServiciosVerView;
@@ -31,12 +33,14 @@ public class Main {
     private JFrame ventanaActual;
 
     private LoginController loginController;
-    private RegistrarseController registrarseController;
+    private RegistrarClienteController registrarClienteController;
+    private RegistrarVehiculoController registrarVehiculoController;
     private RepuestosController repuestosController;
     private ServiciosController serviciosController;
 
     private LoginView loginView;
-    private RegistrarseView registrarseView;
+    private RegistrarClienteView registrarClienteView;
+    private RegistrarVehiculoView registrarVehiculoView;
     private AdminMainView adminMainView;
     private ClienteMainView clienteMainView;
     private RepuestosView repuestosView;
@@ -46,21 +50,23 @@ public class Main {
 
     public Main() {
 
-        registrarseController = new RegistrarseController();
-        loginController = new LoginController(registrarseController);
+        registrarClienteController = new RegistrarClienteController();
+        registrarVehiculoController = new RegistrarVehiculoController();
+        loginController = new LoginController(registrarClienteController);
         repuestosController = new RepuestosController();
         serviciosController = new ServiciosController(repuestosController.repuestos);
 
         loginView = new LoginView(this, loginController);
-        registrarseView = new RegistrarseView(this, registrarseController);
+        registrarClienteView = new RegistrarClienteView(this, registrarClienteController);
+        registrarVehiculoView = new RegistrarVehiculoView(this, registrarVehiculoController);
         adminMainView = new AdminMainView(this);
         clienteMainView = new ClienteMainView(this);
         repuestosView = new RepuestosView(this, repuestosController);
         repuestosVerView = new RepuestosVerView(this, repuestosController);
         serviciosView = new ServiciosView(this, serviciosController);
         serviciosVerView = new ServiciosVerView(this, serviciosController);
-        //mostrarLoginView();
-        mostrarRepuestosView();
+        
+        mostrarClienteMainView();
     }
 
     public void mostrarLoginView() {
@@ -68,9 +74,14 @@ public class Main {
         loginView.setLocationRelativeTo(null);
     }
 
-    public void mostrarRegistrarView() {
-        cambiarVentana(registrarseView);
-        registrarseView.setLocationRelativeTo(null);
+    public void mostrarRegistrarClienteView() {
+        cambiarVentana(registrarClienteView);
+        registrarClienteView.setLocationRelativeTo(null);
+    }
+
+    public void mostrarRegistrarVehiculoView() {
+        cambiarVentana(registrarVehiculoView);
+        registrarVehiculoView.setLocationRelativeTo(null);
     }
 
     public void mostrarAdminMainView() {
@@ -98,8 +109,8 @@ public class Main {
         cambiarVentana(serviciosView);
         serviciosView.setLocationRelativeTo(null);
     }
-    
-    public void mostrarServiciosVerView(){
+
+    public void mostrarServiciosVerView() {
         cambiarVentana(serviciosVerView);
         serviciosVerView.setLocationRelativeTo(null);
         serviciosVerView.cargarServicios();

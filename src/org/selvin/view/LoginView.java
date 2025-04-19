@@ -114,7 +114,7 @@ public class LoginView extends javax.swing.JFrame implements Ventana {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
-        main.mostrarRegistrarView();
+        main.mostrarRegistrarClienteView();
         this.ocultar();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 

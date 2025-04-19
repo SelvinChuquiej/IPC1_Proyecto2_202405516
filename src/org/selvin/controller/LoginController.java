@@ -13,9 +13,9 @@ import org.selvin.model.EmpleadoModel;
  */
 public class LoginController {
 
-    private RegistrarseController registrarseController;
+    private RegistrarClienteController registrarseController;
 
-    public LoginController(RegistrarseController registrarseController) {
+    public LoginController(RegistrarClienteController registrarseController) {
         this.registrarseController = registrarseController;
     }
 

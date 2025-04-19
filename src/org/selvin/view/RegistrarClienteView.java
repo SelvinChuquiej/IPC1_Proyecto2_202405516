@@ -5,7 +5,7 @@
 package org.selvin.view;
 
 import javax.swing.JOptionPane;
-import org.selvin.controller.RegistrarseController;
+import org.selvin.controller.RegistrarClienteController;
 import org.selvin.main.Main;
 import org.selvin.main.Ventana;
 
@@ -13,21 +13,21 @@ import org.selvin.main.Ventana;
  *
  * @author Selvi
  */
-public class RegistrarseView extends javax.swing.JFrame implements Ventana {
+public class RegistrarClienteView extends javax.swing.JFrame implements Ventana {
 
     /**
      * Creates new form RegistrarseView
      */
     private Main main;
-    private RegistrarseController registrarseController;
+    private RegistrarClienteController registrarseController;
 
-    public RegistrarseView(Main main, RegistrarseController registrarseController) {
+    public RegistrarClienteView(Main main, RegistrarClienteController registrarseController) {
         this.main = main;
         this.registrarseController = registrarseController;
         initComponents();
     }
 
-    public RegistrarseView() {
+    public RegistrarClienteView() {
     }
 
     /**
@@ -173,20 +173,21 @@ public class RegistrarseView extends javax.swing.JFrame implements Ventana {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegistrarseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarClienteView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegistrarseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarClienteView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegistrarseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarClienteView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegistrarseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarClienteView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RegistrarseView().setVisible(true);
+                new RegistrarClienteView().setVisible(true);
             }
         });
     }

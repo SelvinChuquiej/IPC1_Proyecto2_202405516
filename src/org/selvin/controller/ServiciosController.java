@@ -23,8 +23,8 @@ import org.selvin.view.ServiciosView;
  */
 public class ServiciosController {
 
-    private ServiciosView serviciosView;
     public ServicioModel[] servicios = new ServicioModel[25];
+    private ServiciosView serviciosView;
     private RepuestoModel[] repuestosExistentes;
     private int id = 1;
     private int contServicios = 0;
@@ -46,7 +46,7 @@ public class ServiciosController {
         }
     }
 
-    public void leerArchivoServicio(File archivo) {
+    private void leerArchivoServicio(File archivo) {
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
             while ((linea = br.readLine()) != null && contServicios < servicios.length) {
@@ -59,7 +59,7 @@ public class ServiciosController {
         }
     }
 
-    public void procesarLineaServicio(String linea) {
+    private void procesarLineaServicio(String linea) {
         String[] partes = linea.split("-");
         if (partes.length == 5) {
             try {

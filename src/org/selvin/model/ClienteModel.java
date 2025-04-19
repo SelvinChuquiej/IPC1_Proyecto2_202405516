@@ -24,7 +24,14 @@ public class ClienteModel extends LoginModel {
         this.tipoCliente = tipoCliente;
     }
 
-    
+    public ClienteModel(String dpi, String nombreCompleto, String usuario, String contrasena, String tipoCliente, VehiculoModel[] vehiculos) {
+        super(usuario, contrasena);
+        this.dpi = dpi;
+        this.nombreCompleto = nombreCompleto;
+        this.tipoCliente = tipoCliente;
+        this.vehiculos = vehiculos != null ? vehiculos : new VehiculoModel[0];
+    }
+
     public ClienteModel(String dpi, String nombreCompleto, String tipoCliente, VehiculoModel[] vehiculos) {
         this.dpi = dpi;
         this.nombreCompleto = nombreCompleto;
