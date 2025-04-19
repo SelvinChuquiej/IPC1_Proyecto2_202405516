@@ -130,7 +130,6 @@ public class LoginView extends javax.swing.JFrame implements Ventana {
 
         Object loginExitoso = loginController.login(usuario, contrasena);
         if (loginExitoso instanceof Object) {
-
             txtUsuario.setText("");
             txtContrasena.setText("");
 

@@ -4,6 +4,7 @@
  */
 package org.selvin.controller;
 
+import org.selvin.controller.RegistrarClienteController;
 import org.selvin.model.ClienteModel;
 import org.selvin.model.EmpleadoModel;
 
@@ -13,25 +14,33 @@ import org.selvin.model.EmpleadoModel;
  */
 public class LoginController {
 
-    private RegistrarClienteController registrarseController;
+    private RegistrarClienteController registrarseClienteController;
+    private static Object usuarioLogueado;
 
     public LoginController(RegistrarClienteController registrarseController) {
-        this.registrarseController = registrarseController;
+        this.registrarseClienteController = registrarseController;
     }
 
     public Object login(String usuario, String contrasena) {
-        for (EmpleadoModel empleado : registrarseController.getEmpleados()) {
+        for (EmpleadoModel empleado : registrarseClienteController.getEmpleados()) {
             if (empleado.getUsuario().equals(usuario) && empleado.getContrasena().equals(contrasena)) {
+                usuarioLogueado = empleado;
                 return empleado;
             }
         }
 
-        for (ClienteModel cliente : registrarseController.getClientes()) {
+        for (ClienteModel cliente : registrarseClienteController.getClientes()) {
             if (cliente.getUsuario().equals(usuario) && cliente.getContrasena().equals(contrasena)) {
+                usuarioLogueado = cliente;
                 return cliente;
             }
         }
 
         return null;
     }
+
+    public static Object getUsuarioLogueado() {
+        return usuarioLogueado;
+    }
+
 }

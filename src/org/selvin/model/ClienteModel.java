@@ -10,7 +10,7 @@ package org.selvin.model;
  */
 public class ClienteModel extends LoginModel {
 
-    private String dpi;
+    private String dpi; //ID
     private String nombreCompleto;
     private String tipoCliente; // normal u oro
     private VehiculoModel[] vehiculos;
@@ -22,14 +22,6 @@ public class ClienteModel extends LoginModel {
         this.dpi = dpi;
         this.nombreCompleto = nombreCompleto;
         this.tipoCliente = tipoCliente;
-    }
-
-    public ClienteModel(String dpi, String nombreCompleto, String usuario, String contrasena, String tipoCliente, VehiculoModel[] vehiculos) {
-        super(usuario, contrasena);
-        this.dpi = dpi;
-        this.nombreCompleto = nombreCompleto;
-        this.tipoCliente = tipoCliente;
-        this.vehiculos = vehiculos != null ? vehiculos : new VehiculoModel[0];
     }
 
     public ClienteModel(String dpi, String nombreCompleto, String tipoCliente, VehiculoModel[] vehiculos) {

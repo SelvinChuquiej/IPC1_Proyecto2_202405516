@@ -71,7 +71,7 @@ public class ClienteAutomovilController {
         }
     }
 
-    public VehiculoModel[] procesarVehiculos(String listaAutos) {
+    /*public VehiculoModel[] procesarVehiculos(String listaAutos) {
         String[] autos = listaAutos.split(";");
         VehiculoModel[] vehiculos = new VehiculoModel[autos.length];
         for (int i = 0; i < autos.length; i++) {
@@ -86,6 +86,6 @@ public class ClienteAutomovilController {
             }
         }
         return vehiculos;
-    }
+    }*/
 
 }

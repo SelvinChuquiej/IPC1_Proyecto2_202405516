@@ -4,15 +4,23 @@
  */
 package org.selvin.controller;
 
+import java.awt.Component;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import javax.swing.ImageIcon;
 import org.selvin.view.RegistrarVehiculoView;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import org.selvin.model.ClienteModel;
 import org.selvin.model.VehiculoModel;
 
 /**
@@ -23,8 +31,10 @@ public class RegistrarVehiculoController {
 
     public VehiculoModel[] vehiculos = new VehiculoModel[25];
     private RegistrarVehiculoView registrarAutoView;
+    private LoginController loginController;
     private int countVehiculo = 0;
     private String IMAGES_DIR = "img_vehiculos/";
+    private DefaultTableModel dtm;
 
     public RegistrarVehiculoController() {
         File dir = new File(IMAGES_DIR);
@@ -37,9 +47,11 @@ public class RegistrarVehiculoController {
         if (countVehiculo >= vehiculos.length) {
             return false;
         }
+        ClienteModel cliente = (ClienteModel) loginController.getUsuarioLogueado();
         try {
+            System.out.println(cliente.getDpi());
             String rutaImg = copiarImg(rutaImagen, placa);
-            VehiculoModel vehiculo = new VehiculoModel(placa, Marca, modelo, rutaImagen);
+            VehiculoModel vehiculo = new VehiculoModel(placa, Marca, modelo, rutaImagen, cliente.getDpi());
             vehiculos[countVehiculo++] = vehiculo;
             return true;
         } catch (Exception e) {
@@ -68,6 +80,46 @@ public class RegistrarVehiculoController {
         if (option == JFileChooser.APPROVE_OPTION) {
             File archivo = dlg.getSelectedFile();
             txtRuta.setText(archivo.getPath());
+        }
+    }
+
+    public class ImageRenderer extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (value instanceof String) {
+                String rutaImagen = (String) value;
+                if (rutaImagen != null && !rutaImagen.isEmpty()) {
+                    try {
+                        ImageIcon icon = new ImageIcon(rutaImagen);
+                        Image img = icon.getImage().getScaledInstance(150, 100, Image.SCALE_FAST);
+                        setIcon(new ImageIcon(img));
+                    } catch (Exception e) {
+                        setText("Error al cargar");
+                    }
+                } else {
+                    setText("Sin imagen");
+                }
+            }
+            setHorizontalAlignment(JLabel.CENTER);
+            return this;
+        }
+    }
+
+    public void cargarVehiculos(JTable tblVehiculos) {
+        dtm = (DefaultTableModel) tblVehiculos.getModel();
+        dtm.setRowCount(0);
+        tblVehiculos.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
+        ClienteModel cliente = (ClienteModel) loginController.getUsuarioLogueado();
+        for (VehiculoModel v : vehiculos) {
+            if (v != null && cliente.getDpi().equals(v.getDpiLog())) {
+                Object[] datos = {
+                    v.getPlaca(),
+                    v.getMarca(),
+                    v.getModelo(),
+                    v.getRutaImagen()
+                };
+                dtm.addRow(datos);
+            }
         }
     }
 }

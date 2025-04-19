@@ -16,17 +16,27 @@ public class VehiculoModel implements Serializable {
     private String marca;
     private String modelo;
     private String rutaImagen;
+    private String dpiLog;
 
     public VehiculoModel() {
     }
 
-    public VehiculoModel(String placa, String marca, String modelo, String rutaImagen) {
+    public VehiculoModel(String placa, String marca, String modelo, String rutaImagen, String dpiLog) {
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;
         this.rutaImagen = rutaImagen;
+        this.dpiLog = dpiLog;
     }
 
+    public String getDpiLog() {
+        return dpiLog;
+    }
+
+    public void setDpiLog(String dpiLog) {
+        this.dpiLog = dpiLog;
+    }
+    
     public String getPlaca() {
         return placa;
     }

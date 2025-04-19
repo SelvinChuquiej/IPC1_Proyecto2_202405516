@@ -20,6 +20,7 @@ import org.selvin.view.RepuestosVerView;
 import org.selvin.view.RepuestosView;
 import org.selvin.view.ServiciosVerView;
 import org.selvin.view.ServiciosView;
+import org.selvin.view.VerVehiculosView;
 
 /**
  *
@@ -47,12 +48,13 @@ public class Main {
     private RepuestosVerView repuestosVerView;
     private ServiciosView serviciosView;
     private ServiciosVerView serviciosVerView;
+    private VerVehiculosView verVehiculosView;
 
     public Main() {
-
         registrarClienteController = new RegistrarClienteController();
-        registrarVehiculoController = new RegistrarVehiculoController();
         loginController = new LoginController(registrarClienteController);
+        registrarVehiculoController = new RegistrarVehiculoController();
+
         repuestosController = new RepuestosController();
         serviciosController = new ServiciosController(repuestosController.repuestos);
 
@@ -61,12 +63,16 @@ public class Main {
         registrarVehiculoView = new RegistrarVehiculoView(this, registrarVehiculoController);
         adminMainView = new AdminMainView(this);
         clienteMainView = new ClienteMainView(this);
+        
         repuestosView = new RepuestosView(this, repuestosController);
         repuestosVerView = new RepuestosVerView(this, repuestosController);
+        
         serviciosView = new ServiciosView(this, serviciosController);
         serviciosVerView = new ServiciosVerView(this, serviciosController);
         
-        mostrarClienteMainView();
+        verVehiculosView = new VerVehiculosView(this, registrarVehiculoController);
+
+        mostrarLoginView();
     }
 
     public void mostrarLoginView() {
@@ -114,6 +120,12 @@ public class Main {
         cambiarVentana(serviciosVerView);
         serviciosVerView.setLocationRelativeTo(null);
         serviciosVerView.cargarServicios();
+    }
+    
+    public void mostrarVerVehiculosView(){
+        cambiarVentana(verVehiculosView);
+        verVehiculosView.setLocationRelativeTo(null);
+        verVehiculosView.cargarVehiculos();
     }
 
     private void cambiarVentana(Ventana newVentana) {
