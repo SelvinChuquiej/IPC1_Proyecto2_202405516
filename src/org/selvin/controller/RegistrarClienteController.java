@@ -15,7 +15,7 @@ import org.selvin.model.EmpleadoModel;
 public class RegistrarClienteController {
 
     public ClienteModel[] clientes = new ClienteModel[25];
-    public EmpleadoModel[] empleados = new EmpleadoModel[25];
+    public EmpleadoModel[] empleados = new EmpleadoModel[25]; 
     private int countCliente = 0;
     private int countEmpleado = 0;
 
@@ -47,7 +47,24 @@ public class RegistrarClienteController {
         cliente.setUsuario(usuario);
         cliente.setContrasena(contrasena);
         clientes[countCliente++] = cliente;
+        ordenamientoCliente();
         return true;
+    }
+
+    public void ordenamientoCliente() {
+        boolean flag = true;
+        ClienteModel temp;
+        while (flag) {
+            flag = false;
+            for (int i = 0; i < countCliente - 1; i++) {
+                if (Integer.parseInt(clientes[i].getDpi()) > Integer.parseInt(clientes[i + 1].getDpi())) {
+                    temp = clientes[i];
+                    clientes[i] = clientes[i + 1];
+                    clientes[i + 1] = temp;
+                    flag = true;
+                }
+            }
+        }
     }
 
     public EmpleadoModel[] getEmpleados() {
