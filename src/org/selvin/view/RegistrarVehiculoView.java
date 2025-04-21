@@ -63,7 +63,7 @@ public class RegistrarVehiculoView extends javax.swing.JFrame implements Ventana
 
         txtImage.setEditable(false);
 
-        jLabel1.setText("Placa");
+        jLabel1.setText("Placa (Ejemplo: 123ABC)");
 
         jLabel2.setText("Marca");
 
@@ -164,8 +164,9 @@ public class RegistrarVehiculoView extends javax.swing.JFrame implements Ventana
         String modelo = txtModelo.getText().trim();
         String rutaImagen = txtImage.getText().trim();
         
-         if (placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || rutaImagen.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+        boolean placaValida = registrarAutoController.placaValida(placa);
+         if (!placaValida ||placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || rutaImagen.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios y/o Placa invalida", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         

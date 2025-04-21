@@ -49,7 +49,6 @@ public class RegistrarVehiculoController {
         }
         ClienteModel cliente = (ClienteModel) loginController.getUsuarioLogueado();
         try {
-            System.out.println(cliente.getDpi());
             String rutaImg = copiarImg(rutaImagen, placa);
             VehiculoModel vehiculo = new VehiculoModel(placa, Marca, modelo, rutaImagen, cliente.getDpi());
             vehiculos[countVehiculo++] = vehiculo;
@@ -84,6 +83,7 @@ public class RegistrarVehiculoController {
     }
 
     public class ImageRenderer extends DefaultTableCellRenderer {
+
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             if (value instanceof String) {
@@ -121,5 +121,65 @@ public class RegistrarVehiculoController {
                 dtm.addRow(datos);
             }
         }
+    }
+
+    public void ordenarPorPlacaAsc() {
+        int salto = countVehiculo / 2;
+        while (salto > 0) {
+            for (int i = salto; i < countVehiculo; i++) {
+                VehiculoModel temp = vehiculos[i];
+                int j;
+                for (j = i; j >= salto; j -= salto) {
+                    String placaActual = vehiculos[j - salto].getPlaca();
+                    String placaTemp = temp.getPlaca();
+                    if (placaActual.compareTo(placaTemp) > 0) {
+                        vehiculos[j] = vehiculos[j - salto];
+                    } else {
+                        break;
+                    }
+                }
+                vehiculos[j] = temp;
+            }
+            salto /= 2;
+        }
+    }
+
+    public void ordenarPorPlacaDesc() {
+        int salto = countVehiculo / 2;
+        while (salto > 0) {
+            for (int i = salto; i < countVehiculo; i++) {
+                VehiculoModel temp = vehiculos[i];
+                int j;
+                for (j = i; j >= salto; j -= salto) {
+                    String placaActual = vehiculos[j - salto].getPlaca();
+                    String placaTemp = temp.getPlaca();
+                    if (placaActual.compareTo(placaTemp) < 0) {
+                        vehiculos[j] = vehiculos[j - salto];
+                    } else {
+                        break;
+                    }
+                }
+                vehiculos[j] = temp;
+            }
+            salto /= 2;
+        }
+    }
+
+    public boolean placaValida(String placa) {
+        if (placa == null || placa.length() != 6) {
+            return false;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            if (!Character.isDigit(placa.charAt(i))) {
+                return false;
+            }
+        }
+        for (int i = 3; i < 6; i++) {
+            if (!Character.isLetter(placa.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
