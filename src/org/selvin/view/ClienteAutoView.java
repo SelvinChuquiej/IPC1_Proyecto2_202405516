@@ -139,6 +139,8 @@ public class ClienteAutoView extends javax.swing.JFrame implements Ventana {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        main.mostrarVerClienteAutoView();
+        this.ocultar();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**

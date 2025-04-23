@@ -94,7 +94,7 @@ public class RegistrarVehiculoController {
         }
     }
 
-    public class ImageRenderer extends DefaultTableCellRenderer {
+    public static class ImageRenderer extends DefaultTableCellRenderer {
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -193,5 +193,11 @@ public class RegistrarVehiculoController {
             }
         }
         return true;
+    }
+    
+      public VehiculoModel[] getVehiculos() {
+        VehiculoModel[] result = new VehiculoModel[countVehiculo];
+        System.arraycopy(vehiculos, 0, result, 0, countVehiculo);
+        return result;
     }
 }

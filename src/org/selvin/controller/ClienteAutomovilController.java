@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import javax.swing.JFileChooser;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -115,10 +116,8 @@ public class ClienteAutomovilController {
     }
 
     public void mostrarClienteAuto() {
-        // Obtener todos los clientes registrados
         ClienteModel[] clientes = registrarClienteController.getClientes();
 
-        // Recorrer cada cliente
         for (ClienteModel cliente : clientes) {
             if (cliente != null) {
                 System.out.println("DPI: " + cliente.getDpi());
@@ -127,7 +126,6 @@ public class ClienteAutomovilController {
                 System.out.println("Tipo Cliente: " + cliente.getTipoCliente());
                 System.out.println("--- Automóviles ---");
 
-                // Obtener y mostrar los vehículos de este cliente
                 boolean tieneAutos = false;
                 for (VehiculoModel vehiculo : registrarVehiculoController.vehiculos) {
                     if (vehiculo != null && vehiculo.getDpiLog() != null
@@ -139,12 +137,39 @@ public class ClienteAutomovilController {
                         System.out.println("  --------------------");
                         tieneAutos = true;
                     }
-                }
+                } 
 
                 if (!tieneAutos) {
                     System.out.println("  El cliente no tiene automóviles registrados.");
                 }
                 System.out.println("========================================");
+            }
+        }
+    }
+
+    public void cargarClienteAutos(JTable tblClienteAuto) {
+        dtm = (DefaultTableModel) tblClienteAuto.getModel();
+        dtm.setRowCount(0);
+        tblClienteAuto.getColumnModel().getColumn(7).setCellRenderer(new RegistrarVehiculoController.ImageRenderer());
+        
+        ClienteModel[] clientes = registrarClienteController.getClientes();
+        VehiculoModel[] VehiculoModel = registrarVehiculoController.getVehiculos();
+        for (ClienteModel c : clientes) {
+            if (c != null) {
+                for (VehiculoModel v : VehiculoModel) {
+                    if (v != null && v.getDpiLog() != null && v.getDpiLog().equals(c.getDpi())) {
+                        Object[] datos = {
+                            c.getDpi(),
+                            c.getNombreCompleto(),
+                            c.getUsuario(),
+                            c.getTipoCliente(),
+                            v.getPlaca(),
+                            v.getMarca(),
+                            v.getModelo(),
+                            v.getRutaImagen(),};
+                        dtm.addRow(datos);
+                    }
+                }
             }
         }
     }

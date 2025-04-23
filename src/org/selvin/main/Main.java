@@ -22,6 +22,7 @@ import org.selvin.view.RepuestosVerView;
 import org.selvin.view.RepuestosView;
 import org.selvin.view.ServiciosVerView;
 import org.selvin.view.ServiciosView;
+import org.selvin.view.VerClienteAutoView;
 import org.selvin.view.VerVehiculosView;
 
 /**
@@ -53,6 +54,7 @@ public class Main {
     private ServiciosVerView serviciosVerView;
     private VerVehiculosView verVehiculosView;
     private ClienteAutoView clienteAutoView;
+    private VerClienteAutoView verClienteAutoView;
 
     public Main() {
         registrarClienteController = new RegistrarClienteController();
@@ -79,6 +81,7 @@ public class Main {
         verVehiculosView = new VerVehiculosView(this, registrarVehiculoController);
 
         clienteAutoView = new ClienteAutoView(this, clienteAutomovilController);
+        verClienteAutoView = new VerClienteAutoView(this, clienteAutomovilController);
         mostrarLoginView();
     }
 
@@ -139,6 +142,13 @@ public class Main {
         cambiarVentana(clienteAutoView);
         clienteAutoView.setLocationRelativeTo(null);
     }
+    
+    public void mostrarVerClienteAutoView(){
+        cambiarVentana(verClienteAutoView);
+        verClienteAutoView.setLocationRelativeTo(null);
+        verClienteAutoView.cargarClienteAutos();
+    }
+    
     private void cambiarVentana(Ventana newVentana) {
         if (ventanaActual != null) {
             ventanaActual.setVisible(true);
