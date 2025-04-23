@@ -43,20 +43,32 @@ public class RegistrarVehiculoController {
         }
     }
 
-    public boolean addVehiculos(String placa, String Marca, String modelo, String rutaImagen) {
+    public boolean addVehiculos(String placa, String Marca, String modelo, String rutaImagen, String dpi) {
         if (countVehiculo >= vehiculos.length) {
             return false;
         }
-        ClienteModel cliente = (ClienteModel) loginController.getUsuarioLogueado();
+        for (int i = 0; i < countVehiculo; i++) {
+            if (vehiculos[i] != null && vehiculos[i].getPlaca().equals(placa)) {
+                return false;
+            }
+        }
         try {
             String rutaImg = copiarImg(rutaImagen, placa);
-            VehiculoModel vehiculo = new VehiculoModel(placa, Marca, modelo, rutaImagen, cliente.getDpi());
+            VehiculoModel vehiculo = new VehiculoModel(placa, Marca, modelo, rutaImagen, dpi);
             vehiculos[countVehiculo++] = vehiculo;
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean addVehiculos(String placa, String marca, String modelo, String rutaImagen) {
+        ClienteModel cliente = (ClienteModel) loginController.getUsuarioLogueado();
+        if (cliente == null) {
+            return false;
+        }
+        return addVehiculos(placa, marca, modelo, rutaImagen, cliente.getDpi());
     }
 
     private String copiarImg(String rutaImgOriginal, String placa) throws IOException {

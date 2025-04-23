@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Selvi/Desktop/Selvin/USAC/SEMESTRE%20III/LAB%20IPC/proyecto2/src/org/selvin/view/VerVehiculosView.java</file>
-            <file>file:/C:/Users/Selvi/Desktop/Selvin/USAC/SEMESTRE%20III/LAB%20IPC/proyecto2/src/org/selvin/view/ClienteMainView.java</file>
+            <file>file:/C:/Users/Selvi/Desktop/Selvin/USAC/SEMESTRE%20III/LAB%20IPC/proyecto2/src/org/selvin/controller/RepuestosController.java</file>
+            <file>file:/C:/Users/Selvi/Desktop/Selvin/USAC/SEMESTRE%20III/LAB%20IPC/proyecto2/src/org/selvin/view/ClienteAutoView.java</file>
             <file>file:/C:/Users/Selvi/Desktop/Selvin/USAC/SEMESTRE%20III/LAB%20IPC/proyecto2/src/org/selvin/controller/RegistrarVehiculoController.java</file>
-            <file>file:/C:/Users/Selvi/Desktop/Selvin/USAC/SEMESTRE%20III/LAB%20IPC/proyecto2/src/org/selvin/main/Main.java</file>
+            <file>file:/C:/Users/Selvi/Desktop/Selvin/USAC/SEMESTRE%20III/LAB%20IPC/proyecto2/src/org/selvin/view/RepuestosView.java</file>
+            <file>file:/C:/Users/Selvi/Desktop/Selvin/USAC/SEMESTRE%20III/LAB%20IPC/proyecto2/src/org/selvin/controller/ServiciosController.java</file>
+            <file>file:/C:/Users/Selvi/Desktop/Selvin/USAC/SEMESTRE%20III/LAB%20IPC/proyecto2/src/org/selvin/controller/ClienteAutomovilController.java</file>
         </group>
     </open-files>
 </project-private>
