@@ -134,7 +134,6 @@ public class ClienteAutoView extends javax.swing.JFrame implements Ventana {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         clienteAutomovilController.seleccionarArchivoTMCA(txtRuta);
-        clienteAutomovilController.mostrarClienteAuto();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

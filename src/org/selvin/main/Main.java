@@ -8,10 +8,11 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import org.selvin.controller.ClienteAutomovilController;
 import org.selvin.controller.LoginController;
-import org.selvin.controller.RegistrarVehiculoController;
+import org.selvin.controller.VehiculoController;
 import org.selvin.controller.RegistrarClienteController;
 import org.selvin.controller.RepuestosController;
 import org.selvin.controller.ServiciosController;
+import org.selvin.controller.VerProgresoClienteController;
 import org.selvin.view.AdminMainView;
 import org.selvin.view.ClienteAutoView;
 import org.selvin.view.ClienteMainView;
@@ -23,6 +24,7 @@ import org.selvin.view.RepuestosView;
 import org.selvin.view.ServiciosVerView;
 import org.selvin.view.ServiciosView;
 import org.selvin.view.VerClienteAutoView;
+import org.selvin.view.VerProgresoClienteView;
 import org.selvin.view.VerVehiculosView;
 
 /**
@@ -38,10 +40,11 @@ public class Main {
 
     private LoginController loginController;
     private RegistrarClienteController registrarClienteController;
-    private RegistrarVehiculoController registrarVehiculoController;
+    private VehiculoController registrarVehiculoController;
     private RepuestosController repuestosController;
     private ServiciosController serviciosController;
     private ClienteAutomovilController clienteAutomovilController;
+    private VerProgresoClienteController verProgresoClienteController;
 
     private LoginView loginView;
     private RegistrarClienteView registrarClienteView;
@@ -55,16 +58,19 @@ public class Main {
     private VerVehiculosView verVehiculosView;
     private ClienteAutoView clienteAutoView;
     private VerClienteAutoView verClienteAutoView;
+    private VerProgresoClienteView verProgresoClienteView;
 
     public Main() {
         registrarClienteController = new RegistrarClienteController();
         loginController = new LoginController(registrarClienteController);
-        registrarVehiculoController = new RegistrarVehiculoController();
+        registrarVehiculoController = new VehiculoController();
 
         repuestosController = new RepuestosController();
-        serviciosController = new ServiciosController(repuestosController.repuestos);
+        serviciosController = new ServiciosController(repuestosController);
 
-        clienteAutomovilController = new ClienteAutomovilController(registrarClienteController.clientes, registrarVehiculoController.vehiculos, registrarClienteController, registrarVehiculoController);
+        clienteAutomovilController = new ClienteAutomovilController(registrarClienteController, registrarVehiculoController);
+
+        verProgresoClienteController = new VerProgresoClienteController(registrarClienteController, registrarVehiculoController, serviciosController);
 
         loginView = new LoginView(this, loginController);
         registrarClienteView = new RegistrarClienteView(this, registrarClienteController);
@@ -82,6 +88,9 @@ public class Main {
 
         clienteAutoView = new ClienteAutoView(this, clienteAutomovilController);
         verClienteAutoView = new VerClienteAutoView(this, clienteAutomovilController);
+
+        verProgresoClienteView = new VerProgresoClienteView(this, verProgresoClienteController);
+
         mostrarLoginView();
     }
 
@@ -138,17 +147,23 @@ public class Main {
         verVehiculosView.cargarVehiculos();
     }
 
-    public void mostrarClienteAutoView(){
+    public void mostrarClienteAutoView() {
         cambiarVentana(clienteAutoView);
         clienteAutoView.setLocationRelativeTo(null);
     }
-    
-    public void mostrarVerClienteAutoView(){
+
+    public void mostrarVerClienteAutoView() {
         cambiarVentana(verClienteAutoView);
         verClienteAutoView.setLocationRelativeTo(null);
         verClienteAutoView.cargarClienteAutos();
     }
-    
+
+    public void mostrarVerProgresoClienteView() {
+        cambiarVentana(verProgresoClienteView);
+        verProgresoClienteView.setLocationRelativeTo(null);
+        verProgresoClienteView.cargarDatos();
+    }
+
     private void cambiarVentana(Ventana newVentana) {
         if (ventanaActual != null) {
             ventanaActual.setVisible(true);

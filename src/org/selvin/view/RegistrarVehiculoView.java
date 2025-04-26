@@ -1,7 +1,7 @@
 package org.selvin.view;
 
 import javax.swing.JOptionPane;
-import org.selvin.controller.RegistrarVehiculoController;
+import org.selvin.controller.VehiculoController;
 import org.selvin.main.Main;
 import org.selvin.main.Ventana;
 
@@ -19,12 +19,12 @@ public class RegistrarVehiculoView extends javax.swing.JFrame implements Ventana
      * Creates new form RegistrarAutoView
      */
     private Main main;
-    private RegistrarVehiculoController registrarAutoController;
+    private VehiculoController registrarAutoController;
 
     public RegistrarVehiculoView() {
     }
 
-    public RegistrarVehiculoView(Main main, RegistrarVehiculoController registrarAutoController) {
+    public RegistrarVehiculoView(Main main, VehiculoController registrarAutoController) {
         this.main = main;
         this.registrarAutoController = registrarAutoController;
         initComponents();

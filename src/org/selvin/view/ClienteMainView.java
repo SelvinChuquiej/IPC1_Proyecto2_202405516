@@ -36,10 +36,10 @@ public class ClienteMainView extends javax.swing.JFrame implements Ventana{
     private void initComponents() {
 
         btnCerrarSesion = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnRegistrarVehiculo = new javax.swing.JButton();
+        btnVerVehiculos = new javax.swing.JButton();
+        btnProgreso = new javax.swing.JButton();
+        btnFacturas = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -51,23 +51,28 @@ public class ClienteMainView extends javax.swing.JFrame implements Ventana{
             }
         });
 
-        jButton2.setText("Registrar automovil");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistrarVehiculo.setText("Registrar automovil");
+        btnRegistrarVehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnRegistrarVehiculoActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Ver mis automoviles");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnVerVehiculos.setText("Ver mis automoviles");
+        btnVerVehiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnVerVehiculosActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Ver progreso");
+        btnProgreso.setText("Ver progreso");
+        btnProgreso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProgresoActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("Facturas");
+        btnFacturas.setText("Facturas");
 
         jLabel1.setText("Cliente");
 
@@ -83,10 +88,10 @@ public class ClienteMainView extends javax.swing.JFrame implements Ventana{
                     .addGroup(layout.createSequentialGroup()
                         .addGap(56, 56, 56)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3)
-                            .addComponent(jButton2)
-                            .addComponent(jButton4)
-                            .addComponent(jButton5)))
+                            .addComponent(btnVerVehiculos)
+                            .addComponent(btnRegistrarVehiculo)
+                            .addComponent(btnProgreso)
+                            .addComponent(btnFacturas)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(176, 176, 176)
                         .addComponent(jLabel1)))
@@ -100,13 +105,13 @@ public class ClienteMainView extends javax.swing.JFrame implements Ventana{
                 .addGap(10, 10, 10)
                 .addComponent(jLabel1)
                 .addGap(27, 27, 27)
-                .addComponent(jButton2)
+                .addComponent(btnRegistrarVehiculo)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(btnVerVehiculos)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4)
+                .addComponent(btnProgreso)
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
+                .addComponent(btnFacturas)
                 .addContainerGap(72, Short.MAX_VALUE))
         );
 
@@ -119,17 +124,23 @@ public class ClienteMainView extends javax.swing.JFrame implements Ventana{
         this.ocultar();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnRegistrarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarVehiculoActionPerformed
         // TODO add your handling code here:
         main.mostrarRegistrarVehiculoView();
         this.ocultar();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnRegistrarVehiculoActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnVerVehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerVehiculosActionPerformed
         // TODO add your handling code here:
         main.mostrarVerVehiculosView();
         this.ocultar();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnVerVehiculosActionPerformed
+
+    private void btnProgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProgresoActionPerformed
+        // TODO add your handling code here:
+        main.mostrarVerProgresoClienteView();
+        this.ocultar();
+    }//GEN-LAST:event_btnProgresoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,10 +179,10 @@ public class ClienteMainView extends javax.swing.JFrame implements Ventana{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrarSesion;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnFacturas;
+    private javax.swing.JButton btnProgreso;
+    private javax.swing.JButton btnRegistrarVehiculo;
+    private javax.swing.JButton btnVerVehiculos;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
     @Override

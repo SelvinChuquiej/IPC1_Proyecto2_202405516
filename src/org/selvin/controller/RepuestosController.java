@@ -80,7 +80,7 @@ public class RepuestosController {
         }
     }
 
-    public void mostrarRepuestos() {
+    /*public void mostrarRepuestos() {
         for (RepuestoModel c : repuestos) {
             if (c != null) {
                 System.out.println("id: " + c.getId());
@@ -92,8 +92,7 @@ public class RepuestosController {
                 System.out.println("--------------------");
             }
         }
-    }
-
+    }*/
     public void cargarRepuestos(JTable tblRepuestos) {
         dtm = (DefaultTableModel) tblRepuestos.getModel();
         dtm.setRowCount(0);
@@ -110,5 +109,11 @@ public class RepuestosController {
                 dtm.addRow(datos);
             }
         }
+    }
+
+    public RepuestoModel[] getRepuestos() {
+        RepuestoModel[] result = new RepuestoModel[contRepuestos];
+        System.arraycopy(result, 0, result, 0, contRepuestos);
+        return result;
     }
 }

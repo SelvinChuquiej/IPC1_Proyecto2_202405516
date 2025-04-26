@@ -23,15 +23,12 @@ import org.selvin.view.ClienteAutoView;
 public class ClienteAutomovilController {
 
     private ClienteAutoView clienteAutoView;
-    private ClienteModel[] clientesExistentes;
-    private VehiculoModel[] vehiculosExistentes;
+    
     private RegistrarClienteController registrarClienteController;
-    private RegistrarVehiculoController registrarVehiculoController;
+    private VehiculoController registrarVehiculoController;
     private DefaultTableModel dtm;
 
-    public ClienteAutomovilController(ClienteModel[] clientesExistentes, VehiculoModel[] vehiculosExistentes, RegistrarClienteController registrarClienteController, RegistrarVehiculoController registrarVehiculoController) {
-        this.clientesExistentes = clientesExistentes;
-        this.vehiculosExistentes = vehiculosExistentes;
+    public ClienteAutomovilController( RegistrarClienteController registrarClienteController, VehiculoController registrarVehiculoController) {
         this.registrarClienteController = registrarClienteController;
         this.registrarVehiculoController = registrarVehiculoController;
     }
@@ -115,7 +112,7 @@ public class ClienteAutomovilController {
         return vehiculos;
     }
 
-    public void mostrarClienteAuto() {
+    /*public void mostrarClienteAuto() {
         ClienteModel[] clientes = registrarClienteController.getClientes();
 
         for (ClienteModel cliente : clientes) {
@@ -145,12 +142,12 @@ public class ClienteAutomovilController {
                 System.out.println("========================================");
             }
         }
-    }
+    }*/
 
     public void cargarClienteAutos(JTable tblClienteAuto) {
         dtm = (DefaultTableModel) tblClienteAuto.getModel();
         dtm.setRowCount(0);
-        tblClienteAuto.getColumnModel().getColumn(7).setCellRenderer(new RegistrarVehiculoController.ImageRenderer());
+        tblClienteAuto.getColumnModel().getColumn(7).setCellRenderer(new VehiculoController.ImageRenderer());
         
         ClienteModel[] clientes = registrarClienteController.getClientes();
         VehiculoModel[] VehiculoModel = registrarVehiculoController.getVehiculos();

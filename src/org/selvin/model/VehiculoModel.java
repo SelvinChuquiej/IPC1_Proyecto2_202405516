@@ -69,4 +69,11 @@ public class VehiculoModel implements Serializable {
         this.rutaImagen = rutaImagen;
     }
 
+    @Override
+    public String toString() {
+        return placa + " | " + marca + " | " + modelo;
+    }
+    
+    
+
 }

@@ -25,13 +25,13 @@ public class ServiciosController {
 
     public ServicioModel[] servicios = new ServicioModel[25];
     private ServiciosView serviciosView;
-    private RepuestoModel[] repuestosExistentes;
+    private RepuestosController repuestosController;
     private int id = 1;
     private int contServicios = 0;
     private DefaultTableModel dtm;
 
-    public ServiciosController(RepuestoModel[] repuestosExistentes) {
-        this.repuestosExistentes = repuestosExistentes;
+    public ServiciosController(RepuestosController repuestosControllers) {
+        this.repuestosController = repuestosControllers;
     }
 
     public void seleccionarArchivoTMS(JTextField txtRuta) {
@@ -104,7 +104,7 @@ public class ServiciosController {
     }
 
     private RepuestoModel buscarRepuesto(int idRepuesto, String marca, String modelo) {
-        for (RepuestoModel repuesto : repuestosExistentes) {
+        for (RepuestoModel repuesto : repuestosController.getRepuestos()) {
             if (repuesto != null && repuesto.getId() == idRepuesto && repuesto.getMarca().equalsIgnoreCase(marca) && repuesto.getModelo().equalsIgnoreCase(modelo)) {
                 return repuesto;
             }
@@ -113,7 +113,7 @@ public class ServiciosController {
         return null;
     }
 
-    public void mostrarServicios() {
+    /*public void mostrarServicios() {
         for (ServicioModel s : servicios) {
             if (s != null) {
                 System.out.println("id: " + s.getId());
@@ -140,8 +140,7 @@ public class ServiciosController {
                 System.out.println("--------------------");
             }
         }
-    }
-
+    }*/
     public void cargarServicios(JTable tblServicios) {
         dtm = (DefaultTableModel) tblServicios.getModel();
         dtm.setRowCount(0);
@@ -176,5 +175,11 @@ public class ServiciosController {
             }
         }
         return sb.toString();
+    }
+
+    public ServicioModel[] getServicios() {
+        ServicioModel[] result = new ServicioModel[contServicios];
+        System.arraycopy(servicios, 0, result, 0, contServicios);
+        return result;
     }
 }

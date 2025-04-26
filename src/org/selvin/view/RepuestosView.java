@@ -132,8 +132,7 @@ public class RepuestosView extends javax.swing.JFrame implements Ventana {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        repuestosController.seleccionarArchivoTMR(txtRutaRepuestos); 
-        repuestosController.mostrarRepuestos();
+        repuestosController.seleccionarArchivoTMR(txtRutaRepuestos);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

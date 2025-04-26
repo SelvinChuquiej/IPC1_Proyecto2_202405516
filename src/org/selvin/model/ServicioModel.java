@@ -92,4 +92,11 @@ public class ServicioModel implements Serializable {
     public void setPrecioTotal(double precioTotal) {
         this.precioTotal = precioTotal;
     }
+
+    @Override
+    public String toString() {
+        return  nombre + " | " + marca + " | " + modelo;
+    }
+    
+    
 }

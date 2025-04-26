@@ -4,7 +4,7 @@
  */
 package org.selvin.view;
 
-import org.selvin.controller.RegistrarVehiculoController;
+import org.selvin.controller.VehiculoController;
 import org.selvin.main.Main;
 import org.selvin.main.Ventana;
 
@@ -18,8 +18,8 @@ public class VerVehiculosView extends javax.swing.JFrame implements Ventana {
      * Creates new form VerVehiculosView
      */
     private Main main;
-    private RegistrarVehiculoController registrarVehiculoController; 
-    public VerVehiculosView(Main main, RegistrarVehiculoController registrarVehiculoController) {
+    private VehiculoController registrarVehiculoController; 
+    public VerVehiculosView(Main main, VehiculoController registrarVehiculoController) {
         this.main = main;
         this.registrarVehiculoController = registrarVehiculoController;
         initComponents();

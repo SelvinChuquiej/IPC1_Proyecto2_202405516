@@ -131,7 +131,6 @@ public class ServiciosView extends javax.swing.JFrame implements Ventana {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         servicioController.seleccionarArchivoTMS(txtRutaServicios);
-        servicioController.mostrarServicios();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

@@ -27,7 +27,7 @@ import org.selvin.model.VehiculoModel;
  *
  * @author Selvi
  */
-public class RegistrarVehiculoController {
+public class VehiculoController {
 
     public VehiculoModel[] vehiculos = new VehiculoModel[25];
     private RegistrarVehiculoView registrarAutoView;
@@ -36,7 +36,7 @@ public class RegistrarVehiculoController {
     private String IMAGES_DIR = "img_vehiculos/";
     private DefaultTableModel dtm;
 
-    public RegistrarVehiculoController() {
+    public VehiculoController() {
         File dir = new File(IMAGES_DIR);
         if (!dir.exists()) {
             dir.mkdirs();
