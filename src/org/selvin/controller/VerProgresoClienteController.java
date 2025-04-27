@@ -17,24 +17,24 @@ import org.selvin.model.VehiculoModel;
  */
 public class VerProgresoClienteController {
 
-    private RegistrarClienteController registrarClienteController;
-    private VehiculoController vehiculoController;
-    private ServiciosController serviciosController;
+    private ClienteModel[] clientesExistentes;
+    private VehiculoModel[] vehiculosExistentes;
+    private ServicioModel[] serviciosExistentes;
 
     private DefaultTableModel dtm;
 
-    public VerProgresoClienteController(RegistrarClienteController registrarClienteController, VehiculoController vehiculoController, ServiciosController serviciosController) {
-        this.registrarClienteController = registrarClienteController;
-        this.vehiculoController = vehiculoController;
-        this.serviciosController = serviciosController;
+    public VerProgresoClienteController(ClienteModel[] clientesExistentes, VehiculoModel[] vehiculosExistentes, ServicioModel[] serviciosExistentes) {
+        this.clientesExistentes = clientesExistentes;
+        this.vehiculosExistentes = vehiculosExistentes;
+        this.serviciosExistentes = serviciosExistentes;
     }
 
     public void cargarVehiculos(JComboBox<VehiculoModel> cmbVehiculos) {
         cmbVehiculos.removeAllItems();
-        for (ClienteModel c : registrarClienteController.getClientes()) {
+        for (ClienteModel c : clientesExistentes) {
             if (c != null) {
-                for (VehiculoModel v : vehiculoController.getVehiculos()) {
-                    if (v != null && v.getDpiLog() != null && v.getDpiLog().equals(c.getDpi())) {
+                for (VehiculoModel v : vehiculosExistentes) {
+                    if (v != null && v.getDpiLog() == c.getDpi()) {
                         cmbVehiculos.addItem(v);
                     }
                 }
@@ -44,11 +44,10 @@ public class VerProgresoClienteController {
 
     public void cargarServicios(JComboBox<ServicioModel> cmbServicios) {
         cmbServicios.removeAllItems();
-        for (ServicioModel s : serviciosController.getServicios()) {
+        for (ServicioModel s : serviciosExistentes) {
             if (s != null) {
                 cmbServicios.addItem(s);
             }
         }
     }
-    
 }

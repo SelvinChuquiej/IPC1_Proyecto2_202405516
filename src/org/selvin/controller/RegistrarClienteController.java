@@ -4,7 +4,6 @@
  */
 package org.selvin.controller;
 
-import java.util.Vector;
 import org.selvin.model.ClienteModel;
 import org.selvin.model.EmpleadoModel;
 
@@ -15,7 +14,7 @@ import org.selvin.model.EmpleadoModel;
 public class RegistrarClienteController {
 
     public ClienteModel[] clientes = new ClienteModel[25];
-    public EmpleadoModel[] empleados = new EmpleadoModel[25]; 
+    public EmpleadoModel[] empleados = new EmpleadoModel[5];
     private int countCliente = 0;
     private int countEmpleado = 0;
 
@@ -25,20 +24,28 @@ public class RegistrarClienteController {
 
     private void addAdmin() {
         if (countEmpleado < empleados.length) {
-            EmpleadoModel empleado = new EmpleadoModel("Amdin", "Administrador");
-            empleado.setUsuario("admin");
-            empleado.setContrasena("admin");
-            empleados[countEmpleado++] = empleado;
+            EmpleadoModel admin = new EmpleadoModel("Amdin", "Administrador", "Libre");
+            admin.setUsuario("admin");
+            admin.setContrasena("admin");
+            empleados[countEmpleado++] = admin;
+
+            String[] nombresMecanicos = {"Carlos", "Luisa"};
+            for (int i = 0; i < 2; i++) {
+                EmpleadoModel mecanico = new EmpleadoModel(nombresMecanicos[i], "Mecanico", "Libre");
+                mecanico.setUsuario("mecanico" + i);
+                mecanico.setContrasena("mecanico" + i);
+                empleados[countEmpleado++] = mecanico;
+            }
         }
     }
 
-    public boolean addClientes(String usuario, String contrasena, String dpi, String nombre) {
+    public boolean addClientes(String usuario, String contrasena, long dpi, String nombre) {
         if (countCliente >= clientes.length) {
             return false;
         }
 
         for (int i = 0; i < countCliente; i++) {
-            if (clientes[i].getUsuario().equals(usuario) || clientes[i].getDpi().equals(dpi)) {
+            if (clientes[i].getUsuario().equals(usuario) || clientes[i].getDpi() == dpi) {
                 return false;
             }
         }
@@ -57,7 +64,7 @@ public class RegistrarClienteController {
         while (flag) {
             flag = false;
             for (int i = 0; i < countCliente - 1; i++) {
-                if (Integer.parseInt(clientes[i].getDpi()) > Integer.parseInt(clientes[i + 1].getDpi())) {
+                if (clientes[i].getDpi() > clientes[i + 1].getDpi()) {
                     temp = clientes[i];
                     clientes[i] = clientes[i + 1];
                     clientes[i + 1] = temp;
@@ -65,17 +72,5 @@ public class RegistrarClienteController {
                 }
             }
         }
-    }
-
-    public EmpleadoModel[] getEmpleados() {
-        EmpleadoModel[] result = new EmpleadoModel[countEmpleado];
-        System.arraycopy(empleados, 0, result, 0, countEmpleado);
-        return result;
-    }
-
-    public ClienteModel[] getClientes() {
-        ClienteModel[] result = new ClienteModel[countCliente];
-        System.arraycopy(clientes, 0, result, 0, countCliente);
-        return result;
     }
 }

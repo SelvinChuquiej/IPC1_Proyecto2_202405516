@@ -23,14 +23,13 @@ public class OrdenTrabajoModel {
     public OrdenTrabajoModel() {
     }
 
-    public OrdenTrabajoModel(int numeroOrden, VehiculoModel vehiculo, ClienteModel cliente, ServicioModel servicio, LocalDateTime fecha, EmpleadoModel mecanico, String estado) {
+    public OrdenTrabajoModel(int numeroOrden, VehiculoModel vehiculo, ClienteModel cliente, ServicioModel servicio, LocalDateTime fecha, EmpleadoModel mecanico) {
         this.numeroOrden = numeroOrden;
         this.vehiculo = vehiculo;
         this.cliente = cliente;
         this.servicio = servicio;
         this.fecha = fecha;
         this.mecanico = mecanico;
-        this.estado = estado;
     }
 
     public int getNumeroOrden() {

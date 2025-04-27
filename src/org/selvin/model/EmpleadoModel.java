@@ -12,13 +12,15 @@ public class EmpleadoModel extends LoginModel {
 
     private String nombre;
     private String tipo; // administrador o mecanico
+    private String estado;
 
     public EmpleadoModel() {
     }
 
-    public EmpleadoModel(String nombre, String tipo) {
+    public EmpleadoModel(String nombre, String tipo, String estado) {
         this.nombre = nombre;
         this.tipo = tipo;
+        this.estado = estado;
     }
 
     public String getNombre() {
@@ -35,6 +37,14 @@ public class EmpleadoModel extends LoginModel {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
 }

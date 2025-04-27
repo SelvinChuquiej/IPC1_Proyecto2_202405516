@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @author Selvi
  */
-public class ServicioModel implements Serializable {
+public class ServicioModel {
 
     private int id;
     private String nombre;
@@ -34,7 +34,7 @@ public class ServicioModel implements Serializable {
     }
 
     public RepuestoModel[] obtenerID() {
-       return idsRepuestos;
+        return idsRepuestos;
     }
 
     public int getId() {
@@ -95,8 +95,7 @@ public class ServicioModel implements Serializable {
 
     @Override
     public String toString() {
-        return  nombre + " | " + marca + " | " + modelo;
+        return nombre + " | " + marca + " | " + modelo;
     }
-    
-    
+
 }

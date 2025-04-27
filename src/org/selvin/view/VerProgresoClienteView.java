@@ -4,6 +4,8 @@
  */
 package org.selvin.view;
 
+import javax.swing.JOptionPane;
+import org.selvin.controller.OrdenTrabajoController;
 import org.selvin.controller.VerProgresoClienteController;
 import org.selvin.main.Main;
 import org.selvin.main.Ventana;
@@ -21,22 +23,23 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
      */
     private Main main;
     private VerProgresoClienteController verProgresoClienteController;
+    private OrdenTrabajoController ordenTrabajoController;
 
     public VerProgresoClienteView() {
 
     }
 
-    public VerProgresoClienteView(Main main, VerProgresoClienteController verProgresoClienteController) {
+    public VerProgresoClienteView(Main main, VerProgresoClienteController verProgresoClienteController, OrdenTrabajoController ordenTrabajoController) {
         this.main = main;
         this.verProgresoClienteController = verProgresoClienteController;
+        this.ordenTrabajoController = ordenTrabajoController;
         initComponents();
     }
-    
-    public void cargarDatos(){
+
+    public void cargarDatos() {
         verProgresoClienteController.cargarVehiculos(cmbVehiculos);
         verProgresoClienteController.cargarServicios(cmbServicios);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,8 +57,9 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
         btnAñadir = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblVehiculo = new javax.swing.JTable();
+        tblVehiculoServicio = new javax.swing.JTable();
         btnProcesar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,7 +76,7 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
 
         jLabel3.setText("Datos del Vehiculo");
 
-        tblVehiculo.setModel(new javax.swing.table.DefaultTableModel(
+        tblVehiculoServicio.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -80,39 +84,52 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
                 "Placa", "Marca", "Modelo", "Servicio"
             }
         ));
-        jScrollPane1.setViewportView(tblVehiculo);
+        jScrollPane1.setViewportView(tblVehiculoServicio);
 
         btnProcesar.setText("Procesar");
+
+        jButton1.setText("Regresar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cmbServicios, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(38, 38, 38)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btnProcesar)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addGap(354, 354, 354))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnAñadir)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(56, 56, 56)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabel2)
-                                .addComponent(cmbVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(cmbServicios, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnProcesar)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(354, 354, 354))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnAñadir)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(cmbVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1)))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(59, 59, 59)
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(cmbVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -136,7 +153,18 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
 
     private void btnAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirActionPerformed
         // TODO add your handling code here:
+        VehiculoModel vechiculoSelec = (VehiculoModel) cmbVehiculos.getSelectedItem();
+        ServicioModel servicioSelec = (ServicioModel) cmbServicios.getSelectedItem();
+
+        ordenTrabajoController.mostrarInfo(tblVehiculoServicio, vechiculoSelec, servicioSelec);
+        ordenTrabajoController.crearOrden(vechiculoSelec, servicioSelec);
     }//GEN-LAST:event_btnAñadirActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        main.mostrarClienteMainView();
+        this.ocultar();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,11 +207,12 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
     private javax.swing.JButton btnProcesar;
     private javax.swing.JComboBox<ServicioModel> cmbServicios;
     private javax.swing.JComboBox<VehiculoModel> cmbVehiculos;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblVehiculo;
+    private javax.swing.JTable tblVehiculoServicio;
     // End of variables declaration//GEN-END:variables
 
     @Override

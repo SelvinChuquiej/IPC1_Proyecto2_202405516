@@ -63,7 +63,7 @@ public class RegistrarVehiculoView extends javax.swing.JFrame implements Ventana
 
         txtImage.setEditable(false);
 
-        jLabel1.setText("Placa (Ejemplo: 123ABC)");
+        jLabel1.setText("Placa (Ejemplo: ABC123)");
 
         jLabel2.setText("Marca");
 

@@ -54,6 +54,12 @@ public class RegistrarClienteView extends javax.swing.JFrame implements Ventana 
 
         jLabel1.setText("DPI");
 
+        txtDPI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDPIActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Nombre");
 
         jLabel3.setText("Usuario");
@@ -126,7 +132,6 @@ public class RegistrarClienteView extends javax.swing.JFrame implements Ventana 
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-
         String dpi = txtDPI.getText().trim();
         String nombre = txtNombre.getText().trim();
         String usuario = txtUsuario.getText().trim();
@@ -137,7 +142,9 @@ public class RegistrarClienteView extends javax.swing.JFrame implements Ventana 
             return;
         }
 
-        boolean registroExitoso = registrarseController.addClientes(usuario, contrasena, dpi, nombre);
+        long dpiNumero = Long.parseLong(dpi);
+
+        boolean registroExitoso = registrarseController.addClientes(usuario, contrasena, dpiNumero, nombre);
         if (registroExitoso) {
             JOptionPane.showMessageDialog(null, "Registro realizado correctamente");
 
@@ -155,6 +162,10 @@ public class RegistrarClienteView extends javax.swing.JFrame implements Ventana 
         main.mostrarLoginView();
         this.ocultar();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtDPIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDPIActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDPIActionPerformed
 
     /**
      * @param args the command line arguments

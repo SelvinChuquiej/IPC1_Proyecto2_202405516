@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @author Selvi
  */
-public class RepuestoModel implements Serializable {
+public class RepuestoModel {
 
     private int id;
     private String nombre;
@@ -77,5 +77,5 @@ public class RepuestoModel implements Serializable {
 
     public void setPrecio(double precio) {
         this.precio = precio;
-    }  
+    }
 }

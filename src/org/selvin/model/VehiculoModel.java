@@ -10,18 +10,18 @@ import java.io.Serializable;
  *
  * @author Selvi
  */
-public class VehiculoModel implements Serializable {
+public class VehiculoModel {
 
     private String placa;
     private String marca;
     private String modelo;
     private String rutaImagen;
-    private String dpiLog;
+    private long dpiLog;
 
     public VehiculoModel() {
     }
 
-    public VehiculoModel(String placa, String marca, String modelo, String rutaImagen, String dpiLog) {
+    public VehiculoModel(String placa, String marca, String modelo, String rutaImagen, long dpiLog) {
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;
@@ -29,14 +29,14 @@ public class VehiculoModel implements Serializable {
         this.dpiLog = dpiLog;
     }
 
-    public String getDpiLog() {
+    public long getDpiLog() {
         return dpiLog;
     }
 
-    public void setDpiLog(String dpiLog) {
+    public void setDpiLog(long dpiLog) {
         this.dpiLog = dpiLog;
     }
-    
+
     public String getPlaca() {
         return placa;
     }
@@ -73,7 +73,5 @@ public class VehiculoModel implements Serializable {
     public String toString() {
         return placa + " | " + marca + " | " + modelo;
     }
-    
-    
 
 }

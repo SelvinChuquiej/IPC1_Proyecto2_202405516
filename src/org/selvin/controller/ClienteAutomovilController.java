@@ -23,14 +23,18 @@ import org.selvin.view.ClienteAutoView;
 public class ClienteAutomovilController {
 
     private ClienteAutoView clienteAutoView;
-    
+    private ClienteModel[] clientesExistentes;
+    private VehiculoModel[] vehiculosExistentes;
     private RegistrarClienteController registrarClienteController;
-    private VehiculoController registrarVehiculoController;
+    private VehiculoController vehiculoController;
     private DefaultTableModel dtm;
 
-    public ClienteAutomovilController( RegistrarClienteController registrarClienteController, VehiculoController registrarVehiculoController) {
+    public ClienteAutomovilController(ClienteModel[] clientesExistentes, VehiculoModel[] vehiculosExistentes, RegistrarClienteController registrarClienteController, VehiculoController vehiculoController) {
+        this.clientesExistentes = clientesExistentes;
+        this.vehiculosExistentes = vehiculosExistentes;
+
         this.registrarClienteController = registrarClienteController;
-        this.registrarVehiculoController = registrarVehiculoController;
+        this.vehiculoController = vehiculoController;
     }
 
     public void seleccionarArchivoTMCA(JTextField txtRuta) {
@@ -69,21 +73,23 @@ public class ClienteAutomovilController {
                 String tipoCliente = partes[4].trim();
                 String automoviles = partes[5].trim();
 
+                long dpiCliente = Long.parseLong(dpi.trim());
                 boolean clienteExiste = false;
-                for (ClienteModel cliente : registrarClienteController.getClientes()) {
-                    if (cliente != null && cliente.getDpi().equals(dpi)) {
+                for (ClienteModel cliente : clientesExistentes) {
+
+                    if (cliente != null && cliente.getDpi() == dpiCliente) {
                         clienteExiste = true;
                         break;
                     }
                 }
 
                 if (!clienteExiste) {
-                    boolean clienteAdd = registrarClienteController.addClientes(usuario, contraseña, dpi, nombre);
+                    boolean clienteAdd = registrarClienteController.addClientes(usuario, contraseña, dpiCliente, nombre);
                     if (clienteAdd) {
-                        VehiculoModel[] vehiculos = procesarLineaVehiculo(automoviles, dpi);
+                        VehiculoModel[] vehiculos = procesarLineaVehiculo(automoviles, dpiCliente);
                         for (VehiculoModel vehiculo : vehiculos) {
                             if (vehiculo != null) {
-                                registrarVehiculoController.addVehiculos(vehiculo.getPlaca(), vehiculo.getMarca(), vehiculo.getModelo(), vehiculo.getRutaImagen(), dpi);
+                                vehiculoController.addVehiculos(vehiculo.getPlaca(), vehiculo.getMarca(), vehiculo.getModelo(), vehiculo.getRutaImagen(), dpiCliente);
                             }
                         }
                     }
@@ -94,7 +100,7 @@ public class ClienteAutomovilController {
         }
     }
 
-    public VehiculoModel[] procesarLineaVehiculo(String listaVehiculos, String dpiCliente) {
+    public VehiculoModel[] procesarLineaVehiculo(String listaVehiculos, long dpiCliente) {
         String[] autos = listaVehiculos.split(";");
         VehiculoModel[] vehiculos = new VehiculoModel[autos.length];
         for (int i = 0; i < autos.length; i++) {
@@ -112,49 +118,15 @@ public class ClienteAutomovilController {
         return vehiculos;
     }
 
-    /*public void mostrarClienteAuto() {
-        ClienteModel[] clientes = registrarClienteController.getClientes();
-
-        for (ClienteModel cliente : clientes) {
-            if (cliente != null) {
-                System.out.println("DPI: " + cliente.getDpi());
-                System.out.println("Nombre: " + cliente.getNombreCompleto());
-                System.out.println("Usuario: " + cliente.getUsuario());
-                System.out.println("Tipo Cliente: " + cliente.getTipoCliente());
-                System.out.println("--- Automóviles ---");
-
-                boolean tieneAutos = false;
-                for (VehiculoModel vehiculo : registrarVehiculoController.vehiculos) {
-                    if (vehiculo != null && vehiculo.getDpiLog() != null
-                            && vehiculo.getDpiLog().equals(cliente.getDpi())) {
-                        System.out.println("  Placa: " + vehiculo.getPlaca());
-                        System.out.println("  Marca: " + vehiculo.getMarca());
-                        System.out.println("  Modelo: " + vehiculo.getModelo());
-                        System.out.println("  Imagen: " + vehiculo.getRutaImagen());
-                        System.out.println("  --------------------");
-                        tieneAutos = true;
-                    }
-                } 
-
-                if (!tieneAutos) {
-                    System.out.println("  El cliente no tiene automóviles registrados.");
-                }
-                System.out.println("========================================");
-            }
-        }
-    }*/
-
     public void cargarClienteAutos(JTable tblClienteAuto) {
         dtm = (DefaultTableModel) tblClienteAuto.getModel();
         dtm.setRowCount(0);
         tblClienteAuto.getColumnModel().getColumn(7).setCellRenderer(new VehiculoController.ImageRenderer());
-        
-        ClienteModel[] clientes = registrarClienteController.getClientes();
-        VehiculoModel[] VehiculoModel = registrarVehiculoController.getVehiculos();
-        for (ClienteModel c : clientes) {
+
+        for (ClienteModel c : clientesExistentes) {
             if (c != null) {
-                for (VehiculoModel v : VehiculoModel) {
-                    if (v != null && v.getDpiLog() != null && v.getDpiLog().equals(c.getDpi())) {
+                for (VehiculoModel v : vehiculosExistentes) {
+                    if (v != null && v.getDpiLog() == c.getDpi()) {
                         Object[] datos = {
                             c.getDpi(),
                             c.getNombreCompleto(),

@@ -43,7 +43,7 @@ public class VehiculoController {
         }
     }
 
-    public boolean addVehiculos(String placa, String Marca, String modelo, String rutaImagen, String dpi) {
+    public boolean addVehiculos(String placa, String Marca, String modelo, String rutaImagen, long dpi) {
         if (countVehiculo >= vehiculos.length) {
             return false;
         }
@@ -123,7 +123,7 @@ public class VehiculoController {
         tblVehiculos.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
         ClienteModel cliente = (ClienteModel) loginController.getUsuarioLogueado();
         for (VehiculoModel v : vehiculos) {
-            if (v != null && cliente.getDpi().equals(v.getDpiLog())) {
+            if (v != null && cliente.getDpi() == v.getDpiLog()) {
                 Object[] datos = {
                     v.getPlaca(),
                     v.getMarca(),
@@ -183,21 +183,15 @@ public class VehiculoController {
         }
 
         for (int i = 0; i < 3; i++) {
-            if (!Character.isDigit(placa.charAt(i))) {
-                return false;
-            }
-        }
-        for (int i = 3; i < 6; i++) {
             if (!Character.isLetter(placa.charAt(i))) {
                 return false;
             }
         }
+        for (int i = 3; i < 6; i++) {
+            if (!Character.isDigit(placa.charAt(i))) {
+                return false;
+            }
+        }
         return true;
-    }
-    
-      public VehiculoModel[] getVehiculos() {
-        VehiculoModel[] result = new VehiculoModel[countVehiculo];
-        System.arraycopy(vehiculos, 0, result, 0, countVehiculo);
-        return result;
     }
 }

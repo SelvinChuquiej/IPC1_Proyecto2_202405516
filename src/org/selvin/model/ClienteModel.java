@@ -10,32 +10,34 @@ package org.selvin.model;
  */
 public class ClienteModel extends LoginModel {
 
-    private String dpi; //ID
+    private long dpi; //ID
     private String nombreCompleto;
-    private String tipoCliente; // normal u oro
+    private String tipoCliente;// normal u oro
+    private int serviciosRealizados;
     private VehiculoModel[] vehiculos;
 
     public ClienteModel() {
     }
 
-    public ClienteModel(String dpi, String nombreCompleto, String tipoCliente) {
+    public ClienteModel(long dpi, String nombreCompleto, String tipoCliente) {
         this.dpi = dpi;
         this.nombreCompleto = nombreCompleto;
         this.tipoCliente = tipoCliente;
     }
 
-    public ClienteModel(String dpi, String nombreCompleto, String tipoCliente, VehiculoModel[] vehiculos) {
+    public ClienteModel(long dpi, String nombreCompleto, String tipoCliente, int serviciosRealizados, VehiculoModel[] vehiculos) {
         this.dpi = dpi;
         this.nombreCompleto = nombreCompleto;
         this.tipoCliente = tipoCliente;
+        this.serviciosRealizados = 0;
         this.vehiculos = vehiculos;
     }
 
-    public String getDpi() {
+    public long getDpi() {
         return dpi;
     }
 
-    public void setDpi(String dpi) {
+    public void setDpi(long dpi) {
         this.dpi = dpi;
     }
 
@@ -61,6 +63,14 @@ public class ClienteModel extends LoginModel {
 
     public void setVehiculos(VehiculoModel[] vehiculos) {
         this.vehiculos = vehiculos;
+    }
+
+    public int getServiciosRealizados() {
+        return serviciosRealizados;
+    }
+
+    public void setServiciosRealizados(int serviciosRealizados) {
+        this.serviciosRealizados = serviciosRealizados;
     }
 
 }

@@ -26,12 +26,14 @@ public class ServiciosController {
     public ServicioModel[] servicios = new ServicioModel[25];
     private ServiciosView serviciosView;
     private RepuestosController repuestosController;
+    private RepuestoModel[] repuestosExistentes;
     private int id = 1;
     private int contServicios = 0;
     private DefaultTableModel dtm;
 
-    public ServiciosController(RepuestosController repuestosControllers) {
+    public ServiciosController(RepuestosController repuestosControllers, RepuestoModel[] repuestosExistentes) {
         this.repuestosController = repuestosControllers;
+        this.repuestosExistentes = repuestosExistentes;
     }
 
     public void seleccionarArchivoTMS(JTextField txtRuta) {
@@ -78,9 +80,9 @@ public class ServiciosController {
                 int repuestosValidos = 0;
                 double precioRepuestos = 0.0;
 
-                for (String idStr : idsRepuestos) {
-                    if (!idStr.trim().isEmpty()) {
-                        int idRepuesto = Integer.parseInt(idStr.trim());
+                for (String id : idsRepuestos) {
+                    if (!id.trim().isEmpty()) {
+                        int idRepuesto = Integer.parseInt(id.trim());
                         RepuestoModel repuesto = buscarRepuesto(idRepuesto, marca, modelo);
                         if (repuesto != null) {
                             repuestosServicio[repuestosValidos++] = repuesto;
@@ -104,7 +106,7 @@ public class ServiciosController {
     }
 
     private RepuestoModel buscarRepuesto(int idRepuesto, String marca, String modelo) {
-        for (RepuestoModel repuesto : repuestosController.getRepuestos()) {
+        for (RepuestoModel repuesto : repuestosExistentes) {
             if (repuesto != null && repuesto.getId() == idRepuesto && repuesto.getMarca().equalsIgnoreCase(marca) && repuesto.getModelo().equalsIgnoreCase(modelo)) {
                 return repuesto;
             }
@@ -113,34 +115,6 @@ public class ServiciosController {
         return null;
     }
 
-    /*public void mostrarServicios() {
-        for (ServicioModel s : servicios) {
-            if (s != null) {
-                System.out.println("id: " + s.getId());
-                System.out.println("Nombre: " + s.getNombre());
-                System.out.println("marca: " + s.getMarca());
-                System.out.println("modelo: " + s.getModelo());
-                System.out.println("repuestos: ");
-                RepuestoModel[] rp = s.getIdsRepuestos();
-                if (rp != null && rp.length > 0) {
-                    for (int i = 0; i < rp.length; i++) {
-                        if (rp[i] != null) {
-                            System.out.print(rp[i].getId());
-                            if (i < rp.length - 1) {
-                                System.out.print(", ");
-                            }
-                        }
-                    }
-                } else {
-                    System.out.print("Ninguno");
-                }
-                System.out.println();
-                System.out.println("precio Mano de Obra: " + s.getPrecioManoObra());
-                System.out.println("precio Mano Total: " + s.getPrecioTotal());
-                System.out.println("--------------------");
-            }
-        }
-    }*/
     public void cargarServicios(JTable tblServicios) {
         dtm = (DefaultTableModel) tblServicios.getModel();
         dtm.setRowCount(0);

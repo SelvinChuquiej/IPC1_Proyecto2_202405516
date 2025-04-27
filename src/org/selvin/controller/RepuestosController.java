@@ -80,19 +80,6 @@ public class RepuestosController {
         }
     }
 
-    /*public void mostrarRepuestos() {
-        for (RepuestoModel c : repuestos) {
-            if (c != null) {
-                System.out.println("id: " + c.getId());
-                System.out.println("Nombre: " + c.getNombre());
-                System.out.println("marca: " + c.getMarca());
-                System.out.println("modelo: " + c.getModelo());
-                System.out.println("existencias: " + c.getExistencias());
-                System.out.println("precio: " + c.getPrecio());
-                System.out.println("--------------------");
-            }
-        }
-    }*/
     public void cargarRepuestos(JTable tblRepuestos) {
         dtm = (DefaultTableModel) tblRepuestos.getModel();
         dtm.setRowCount(0);
@@ -109,11 +96,5 @@ public class RepuestosController {
                 dtm.addRow(datos);
             }
         }
-    }
-
-    public RepuestoModel[] getRepuestos() {
-        RepuestoModel[] result = new RepuestoModel[contRepuestos];
-        System.arraycopy(result, 0, result, 0, contRepuestos);
-        return result;
     }
 }
