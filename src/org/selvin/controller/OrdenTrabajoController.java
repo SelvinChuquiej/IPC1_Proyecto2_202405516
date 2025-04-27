@@ -215,7 +215,7 @@ public class OrdenTrabajoController {
                     placasCola.append(", ");
                 }
             }
-        }
+        } 
         lblCola.setText(placasCola.length() == 8 ? "En cola: Ninguno" : placasCola.toString());
 
         // Placas en servicio
