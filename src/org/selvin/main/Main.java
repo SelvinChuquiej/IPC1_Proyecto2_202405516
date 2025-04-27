@@ -17,6 +17,7 @@ import org.selvin.controller.VerProgresoClienteController;
 import org.selvin.view.AdminMainView;
 import org.selvin.view.ClienteAutoView;
 import org.selvin.view.ClienteMainView;
+import org.selvin.view.FacturaView;
 import org.selvin.view.LoginView;
 import org.selvin.view.RegistrarVehiculoView;
 import org.selvin.view.RegistrarClienteView;
@@ -38,7 +39,7 @@ public class Main {
      * @param args the command line arguments
      */
     private JFrame ventanaActual;
-    
+
     private LoginController loginController;
     private RegistrarClienteController registrarClienteController;
     private VehiculoController vehiculoController;
@@ -47,7 +48,7 @@ public class Main {
     private ClienteAutomovilController clienteAutomovilController;
     private VerProgresoClienteController verProgresoClienteController;
     private OrdenTrabajoController ordenTrabajoController;
-            
+
     private LoginView loginView;
     private RegistrarClienteView registrarClienteView;
     private RegistrarVehiculoView registrarVehiculoView;
@@ -61,110 +62,118 @@ public class Main {
     private ClienteAutoView clienteAutoView;
     private VerClienteAutoView verClienteAutoView;
     private VerProgresoClienteView verProgresoClienteView;
-    
+    private FacturaView facturaView;
+
     public Main() {
         registrarClienteController = new RegistrarClienteController();
         loginController = new LoginController(registrarClienteController.clientes, registrarClienteController.empleados);
         vehiculoController = new VehiculoController();
-        
+
         repuestosController = new RepuestosController();
         serviciosController = new ServiciosController(repuestosController, repuestosController.repuestos);
-        
+
         clienteAutomovilController = new ClienteAutomovilController(registrarClienteController.clientes, vehiculoController.vehiculos, registrarClienteController, vehiculoController);
-        
+
         verProgresoClienteController = new VerProgresoClienteController(registrarClienteController.clientes, vehiculoController.vehiculos, serviciosController.servicios);
-        ordenTrabajoController = new OrdenTrabajoController(registrarClienteController.empleados);
-        
+        ordenTrabajoController = new OrdenTrabajoController(registrarClienteController.empleados, serviciosController);
+
         loginView = new LoginView(this, loginController);
         registrarClienteView = new RegistrarClienteView(this, registrarClienteController);
         registrarVehiculoView = new RegistrarVehiculoView(this, vehiculoController);
         adminMainView = new AdminMainView(this);
         clienteMainView = new ClienteMainView(this);
-        
+
         repuestosView = new RepuestosView(this, repuestosController);
         repuestosVerView = new RepuestosVerView(this, repuestosController);
-        
+
         serviciosView = new ServiciosView(this, serviciosController);
         serviciosVerView = new ServiciosVerView(this, serviciosController);
-        
+
         verVehiculosView = new VerVehiculosView(this, vehiculoController);
-        
+
         clienteAutoView = new ClienteAutoView(this, clienteAutomovilController);
         verClienteAutoView = new VerClienteAutoView(this, clienteAutomovilController);
-        
+
         verProgresoClienteView = new VerProgresoClienteView(this, verProgresoClienteController, ordenTrabajoController);
-        
+
+        facturaView = new FacturaView(this, ordenTrabajoController);
         mostrarLoginView();
     }
-    
+
     public void mostrarLoginView() {
         cambiarVentana(loginView);
         loginView.setLocationRelativeTo(null);
     }
-    
+
     public void mostrarRegistrarClienteView() {
         cambiarVentana(registrarClienteView);
         registrarClienteView.setLocationRelativeTo(null);
     }
-    
+
     public void mostrarRegistrarVehiculoView() {
         cambiarVentana(registrarVehiculoView);
         registrarVehiculoView.setLocationRelativeTo(null);
     }
-    
+
     public void mostrarAdminMainView() {
         cambiarVentana(adminMainView);
         adminMainView.setLocationRelativeTo(null);
     }
-    
+
     public void mostrarClienteMainView() {
         cambiarVentana(clienteMainView);
         clienteMainView.setLocationRelativeTo(null);
     }
-    
+
     public void mostrarRepuestosView() {
         cambiarVentana(repuestosView);
         repuestosView.setLocationRelativeTo(null);
     }
-    
+
     public void mostrarRepuestosVerView() {
         cambiarVentana(repuestosVerView);
         repuestosVerView.setLocationRelativeTo(null);
         repuestosVerView.cargarRepuestos();
     }
-    
+
     public void mostrarServiciosView() {
         cambiarVentana(serviciosView);
         serviciosView.setLocationRelativeTo(null);
     }
-    
+
     public void mostrarServiciosVerView() {
         cambiarVentana(serviciosVerView);
         serviciosVerView.setLocationRelativeTo(null);
         serviciosVerView.cargarServicios();
     }
-    
+
     public void mostrarVerVehiculosView() {
         cambiarVentana(verVehiculosView);
         verVehiculosView.setLocationRelativeTo(null);
         verVehiculosView.cargarVehiculos();
     }
-    
+
     public void mostrarClienteAutoView() {
         cambiarVentana(clienteAutoView);
         clienteAutoView.setLocationRelativeTo(null);
     }
-    
+
     public void mostrarVerClienteAutoView() {
         cambiarVentana(verClienteAutoView);
         verClienteAutoView.setLocationRelativeTo(null);
         verClienteAutoView.cargarClienteAutos();
     }
-    
+
     public void mostrarVerProgresoClienteView() {
         cambiarVentana(verProgresoClienteView);
         verProgresoClienteView.setLocationRelativeTo(null);
         verProgresoClienteView.cargarDatos();
+    }
+
+    public void mostrarFactura(){
+        cambiarVentana(facturaView);
+        facturaView.setLocationRelativeTo(null);
+        facturaView.cargar();
     }
     
     private void cambiarVentana(Ventana newVentana) {
@@ -174,7 +183,7 @@ public class Main {
         newVentana.mostrar();
         ventanaActual = (JFrame) newVentana;
     }
-    
+
     public static void main(String[] args) {
         // TODO code application logic here
         SwingUtilities.invokeLater(() -> new Main());

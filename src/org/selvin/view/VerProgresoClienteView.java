@@ -5,6 +5,7 @@
 package org.selvin.view;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.selvin.controller.OrdenTrabajoController;
 import org.selvin.controller.VerProgresoClienteController;
 import org.selvin.main.Main;
@@ -60,6 +61,15 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
         tblVehiculoServicio = new javax.swing.JTable();
         btnProcesar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jProgressBar2 = new javax.swing.JProgressBar();
+        jProgressBar3 = new javax.swing.JProgressBar();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,6 +97,11 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
         jScrollPane1.setViewportView(tblVehiculoServicio);
 
         btnProcesar.setText("Procesar");
+        btnProcesar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProcesarActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Regresar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -94,6 +109,18 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
                 jButton1ActionPerformed(evt);
             }
         });
+
+        jLabel4.setText("Cola de espera:");
+
+        jLabel5.setText("En servicio:");
+
+        jLabel6.setText("Listo, Entrega de vehiculo");
+
+        jLabel7.setText("Placa");
+
+        jLabel8.setText("Palca");
+
+        jLabel9.setText("Placa");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,12 +134,32 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(38, 38, 38)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnProcesar)
-                                    .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnAñadir)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addGap(0, 0, Short.MAX_VALUE)
+                                                        .addComponent(btnProcesar))
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(jLabel7)
+                                                        .addGap(0, 0, Short.MAX_VALUE))))
+                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(jProgressBar3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                                                .addComponent(jProgressBar2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel8)
+                                                .addComponent(jLabel9)))
                                         .addComponent(jLabel3)
-                                        .addGap(354, 354, 354))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnAñadir)))
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel5)
+                                        .addComponent(jLabel6))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(56, 56, 56)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,13 +186,31 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
                 .addComponent(cmbServicios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(btnAñadir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnProcesar)
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addGap(25, 25, 25)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pack();
@@ -157,7 +222,7 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
         ServicioModel servicioSelec = (ServicioModel) cmbServicios.getSelectedItem();
 
         ordenTrabajoController.mostrarInfo(tblVehiculoServicio, vechiculoSelec, servicioSelec);
-        ordenTrabajoController.crearOrden(vechiculoSelec, servicioSelec);
+
     }//GEN-LAST:event_btnAñadirActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -165,6 +230,51 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
         main.mostrarClienteMainView();
         this.ocultar();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarActionPerformed
+        // TODO add your handling code here:
+
+        DefaultTableModel model = (DefaultTableModel) tblVehiculoServicio.getModel();
+        int rowCount = model.getRowCount();
+
+        if (rowCount == 0) {
+            JOptionPane.showMessageDialog(null, "No hay ordenes para procesar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        for (int i = 0; i < rowCount; i++) {
+            String placa = (String) model.getValueAt(i, 0);
+            String servicioNombre = (String) model.getValueAt(i, 3);
+            VehiculoModel vehiculo = findVehicleInComboBox(placa);
+            ServicioModel servicio = findServiceInComboBox(servicioNombre);
+
+            if (vehiculo != null && servicio != null) {
+                ordenTrabajoController.crearOrden(vehiculo, servicio);
+            }
+        }
+        model.setRowCount(0);
+        JOptionPane.showMessageDialog(this, "Todas las órdenes han sido procesadas", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnProcesarActionPerformed
+
+    private VehiculoModel findVehicleInComboBox(String placa) {
+        for (int i = 0; i < cmbVehiculos.getItemCount(); i++) {
+            VehiculoModel v = cmbVehiculos.getItemAt(i);
+            if (v.getPlaca().equals(placa)) {
+                return v;
+            }
+        }
+        return null;
+    }
+
+    private ServicioModel findServiceInComboBox(String nombre) {
+        for (int i = 0; i < cmbServicios.getItemCount(); i++) {
+            ServicioModel s = cmbServicios.getItemAt(i);
+            if (s.getNombre().equals(nombre)) {
+                return s;
+            }
+        }
+        return null;
+    }
 
     /**
      * @param args the command line arguments
@@ -211,6 +321,15 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JProgressBar jProgressBar2;
+    private javax.swing.JProgressBar jProgressBar3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblVehiculoServicio;
     // End of variables declaration//GEN-END:variables

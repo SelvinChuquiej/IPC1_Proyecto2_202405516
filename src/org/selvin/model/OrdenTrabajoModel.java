@@ -18,7 +18,10 @@ public class OrdenTrabajoModel {
     private ServicioModel servicio;
     private LocalDateTime fecha;
     private EmpleadoModel mecanico;
-    private String estado; // espera, en servicio, listo
+    private String estado;// espera, en servicio, listo
+    private boolean procesado = false;
+    private boolean pagado = false;
+    private LocalDateTime fechaFinalizacion;
 
     public OrdenTrabajoModel() {
     }
@@ -30,6 +33,12 @@ public class OrdenTrabajoModel {
         this.servicio = servicio;
         this.fecha = fecha;
         this.mecanico = mecanico;
+        this.estado = "espera";
+    }
+
+    public void finalizarOrden() {
+        this.estado = "Finalizado";
+        this.fechaFinalizacion = LocalDateTime.now();
     }
 
     public int getNumeroOrden() {
@@ -86,6 +95,30 @@ public class OrdenTrabajoModel {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public boolean isProcesado() {
+        return procesado;
+    }
+
+    public void setProcesado(boolean procesado) {
+        this.procesado = procesado;
+    }
+
+    public boolean isPagado() {
+        return pagado;
+    }
+
+    public void setPagado(boolean pagado) {
+        this.pagado = pagado;
+    }
+
+    public LocalDateTime getFechaFinalizacion() {
+        return fechaFinalizacion;
+    }
+
+    public void setFechaFinalizacion(LocalDateTime fechaFinalizacion) {
+        this.fechaFinalizacion = fechaFinalizacion;
     }
 
 }

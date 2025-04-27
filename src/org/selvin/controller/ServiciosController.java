@@ -31,8 +31,8 @@ public class ServiciosController {
     private int contServicios = 0;
     private DefaultTableModel dtm;
 
-    public ServiciosController(RepuestosController repuestosControllers, RepuestoModel[] repuestosExistentes) {
-        this.repuestosController = repuestosControllers;
+    public ServiciosController(RepuestosController repuestosController, RepuestoModel[] repuestosExistentes) {
+        this.repuestosController = repuestosController;
         this.repuestosExistentes = repuestosExistentes;
     }
 

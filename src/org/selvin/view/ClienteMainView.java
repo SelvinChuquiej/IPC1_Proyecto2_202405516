@@ -73,6 +73,11 @@ public class ClienteMainView extends javax.swing.JFrame implements Ventana{
         });
 
         btnFacturas.setText("Facturas");
+        btnFacturas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFacturasActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Cliente");
 
@@ -141,6 +146,12 @@ public class ClienteMainView extends javax.swing.JFrame implements Ventana{
         main.mostrarVerProgresoClienteView();
         this.ocultar();
     }//GEN-LAST:event_btnProgresoActionPerformed
+
+    private void btnFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturasActionPerformed
+        // TODO add your handling code here:
+        main.mostrarFactura();
+        this.ocultar();
+    }//GEN-LAST:event_btnFacturasActionPerformed
 
     /**
      * @param args the command line arguments
