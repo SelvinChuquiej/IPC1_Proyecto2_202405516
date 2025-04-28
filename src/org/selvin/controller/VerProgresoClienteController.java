@@ -7,6 +7,7 @@ package org.selvin.controller;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.selvin.controller.LoginController;
 import org.selvin.model.ClienteModel;
 import org.selvin.model.ServicioModel;
 import org.selvin.model.VehiculoModel;
@@ -31,12 +32,11 @@ public class VerProgresoClienteController {
 
     public void cargarVehiculos(JComboBox<VehiculoModel> cmbVehiculos) {
         cmbVehiculos.removeAllItems();
-        for (ClienteModel c : clientesExistentes) {
-            if (c != null) {
-                for (VehiculoModel v : vehiculosExistentes) {
-                    if (v != null && v.getDpiLog() == c.getDpi()) {
-                        cmbVehiculos.addItem(v);
-                    }
+        ClienteModel cliente = (ClienteModel) LoginController.getUsuarioLogueado();
+        if (cliente != null) {
+            for (VehiculoModel v : vehiculosExistentes) {
+                if (v != null && v.getDpiLog() == cliente.getDpi()) {
+                    cmbVehiculos.addItem(v);
                 }
             }
         }

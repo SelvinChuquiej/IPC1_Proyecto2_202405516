@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.selvin.main.Main;
@@ -37,6 +38,7 @@ public class OrdenTrabajoController {
     public OrdenTrabajoModel[] vehiculosEnCola = new OrdenTrabajoModel[100];
     public OrdenTrabajoModel[] vehiculosEnServicio = new OrdenTrabajoModel[100];
     public OrdenTrabajoModel[] vehiculosListos = new OrdenTrabajoModel[100];
+    private ClienteModel[] clientes;
 
     public int countOrdenes = 0;
     public int countEnCola = 0;
@@ -56,8 +58,9 @@ public class OrdenTrabajoController {
         this.actualizacionProgreso = actualizacionProgreso;
     }
 
-    public OrdenTrabajoController(EmpleadoModel[] mecanicos, ServiciosController serviciosController) {
+    public OrdenTrabajoController(EmpleadoModel[] mecanicos, ClienteModel[] clientes, ServiciosController serviciosController) {
         this.mecanicos = mecanicos;
+        this.clientes = clientes;
         this.serviciosController = serviciosController;
         cargarOrdenes();
     }
@@ -72,6 +75,9 @@ public class OrdenTrabajoController {
                 servicio.getNombre()
             };
             dtm.addRow(datos);
+            JOptionPane.showMessageDialog(null, "Servicio asignado correctamente al vehículo " + vehiculo.getMarca() + " " + vehiculo.getModelo() + " con placa " + vehiculo.getPlaca() + ".");
+        } else {
+            JOptionPane.showMessageDialog(null, "El servicio no se puede asignar. La marca o modelo del vehículo no coinciden con los requeridos para este servicio.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -87,7 +93,7 @@ public class OrdenTrabajoController {
 
             if (cliente.getServiciosRealizados() >= 4 && !cliente.getTipoCliente().equalsIgnoreCase("ORO")) {
                 cliente.setTipoCliente("ORO");
-                System.out.println("Cliente " + cliente.getNombreCompleto() + " ahora es tipo ORO.");
+                JOptionPane.showMessageDialog(null, "Cliente " + cliente.getNombreCompleto() + " ahora es tipo ORO.");
             }
             asignarMecanico(newOrden);
         }
@@ -106,8 +112,6 @@ public class OrdenTrabajoController {
             agregarAColaEspera(newOrden);
             if (countEnCola == 1) {
                 executorService.execute(new OrdenTrabajoThread(newOrden, this, serviciosController, actualizacionProgreso));
-            } else {
-                System.out.println("Vehículo en cola de espera: " + newOrden.getVehiculo().getPlaca());
             }
         }
     }
@@ -173,17 +177,6 @@ public class OrdenTrabajoController {
         }
     }
 
-    private synchronized void removerDeCola(OrdenTrabajoModel orden) {
-        for (int i = 0; i < countEnCola; i++) {
-            if (vehiculosEnCola[i] == orden) {
-                System.arraycopy(vehiculosEnCola, i + 1, vehiculosEnCola, i, countEnCola - i - 1);
-                countEnCola--;
-                vehiculosEnCola[countEnCola] = null;
-                break;
-            }
-        }
-    }
-
     private synchronized void mostrarSiguienteEnCola() {
         if (countEnCola > 0 && !mostrandoProgresoCola) {
             mostrandoProgresoCola = true;
@@ -208,15 +201,21 @@ public class OrdenTrabajoController {
 
     public void guardarOrdenes() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_ORDENES))) {
-            oos.writeObject(ordenes);  // Guardamos el arreglo de órdenes
+            for (ClienteModel cliente : clientes) {
+                if (cliente != null) {
+                    if (cliente.getServiciosRealizados() >= 4 && !cliente.getTipoCliente().equalsIgnoreCase("ORO")) {
+                        cliente.setTipoCliente("ORO");
+                    }
+                }
+            }
+            oos.writeObject(ordenes);
             oos.flush();
-            System.out.println("Órdenes guardadas correctamente.");
+            System.out.println("Órdenes y clientes guardados correctamente.");
         } catch (IOException e) {
-             e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
-    // Método para deserializar las órdenes de trabajo
     public void cargarOrdenes() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ARCHIVO_ORDENES))) {
             OrdenTrabajoModel[] ordenesCargadas = (OrdenTrabajoModel[]) ois.readObject();
@@ -229,6 +228,12 @@ public class OrdenTrabajoController {
                         vehiculosEnCola[countEnCola++] = orden;
                     } else if (orden.getEstado().equals("listo")) {
                         vehiculosListos[countListos++] = orden;
+                    }
+
+                    ClienteModel cliente = orden.getCliente();
+                    if (cliente.getServiciosRealizados() >= 4 && !cliente.getTipoCliente().equalsIgnoreCase("ORO")) {
+                        cliente.setTipoCliente("ORO");
+                        JOptionPane.showMessageDialog(null, "Cliente " + cliente.getNombreCompleto() + " ahora es tipo ORO.");
                     }
                 }
             }

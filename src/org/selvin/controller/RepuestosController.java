@@ -13,10 +13,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.selvin.main.Main;
 import org.selvin.model.RepuestoModel;
 import org.selvin.view.RepuestosView;
 
@@ -26,7 +28,7 @@ import org.selvin.view.RepuestosView;
  */
 public class RepuestosController {
 
-    private static final String ARCHIVO_REPUESTOS = "repuestos.dat";
+    private static final String ARCHIVO_REPUESTOS = Main.CARPETA_DAT + "repuestos.dat";
 
     public RepuestoModel[] repuestos = new RepuestoModel[25];
     private RepuestosView repuestosView;
@@ -38,7 +40,7 @@ public class RepuestosController {
         cargarRepuestosDesdeArchivo();
     }
 
-    public void seleccionarArchivoTMR(JTextField txtRuta) {
+    public boolean seleccionarArchivoTMR(JTextField txtRuta) {
         JFileChooser dlg = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos TMR (*.tmr)", "tmr");
         dlg.setFileFilter(filter);
@@ -47,7 +49,9 @@ public class RepuestosController {
             File archivo = dlg.getSelectedFile();
             txtRuta.setText(archivo.getPath());
             leerArchivoRepuestos(archivo);
+            return true;
         }
+        return false;
     }
 
     private void leerArchivoRepuestos(File archivo) {
@@ -78,13 +82,13 @@ public class RepuestosController {
                     RepuestoModel nuevoRepuesto = new RepuestoModel(id++, nombre, marca, modelo, existencias, precio);
                     repuestos[contRepuestos++] = nuevoRepuesto;
                 } else {
-                    System.out.println("Capacidad máxima de repuestos alcanzada");
+                    JOptionPane.showMessageDialog(null, "Capacidad máxima de repuestos alcanzada");
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("El archivo no cumple con el formato");
+            JOptionPane.showMessageDialog(null, "El archivo no cumple con el formato");
         }
     }
 

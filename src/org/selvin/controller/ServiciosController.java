@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -44,7 +45,7 @@ public class ServiciosController {
         cargarServiciosDesdeArchivo();
     }
 
-    public void seleccionarArchivoTMS(JTextField txtRuta) {
+    public boolean seleccionarArchivoTMS(JTextField txtRuta) {
         JFileChooser dlg = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos TMS (*.tms)", "tms");
         dlg.setFileFilter(filter);
@@ -53,7 +54,9 @@ public class ServiciosController {
             File archivo = dlg.getSelectedFile();
             txtRuta.setText(archivo.getPath());
             leerArchivoServicio(archivo);
+            return true;
         }
+        return false;
     }
 
     private void leerArchivoServicio(File archivo) {
@@ -107,10 +110,10 @@ public class ServiciosController {
                 servicios[contServicios++] = new ServicioModel(id++, nombreServicio, marca, modelo, repuestosFinal, precioManoObra, precioTotal);
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Error");
+                JOptionPane.showMessageDialog(null, "Error");
             }
         } else {
-            System.err.println("Error: Formato incorrecto en línea - se esperaban 5 partes");
+            JOptionPane.showMessageDialog(null, "Error: Formato incorrecto en línea - se esperaban 5 partes");
         }
     }
 
@@ -120,7 +123,7 @@ public class ServiciosController {
                 return repuesto;
             }
         }
-        System.out.println("Repuesto con ID " + idRepuesto + " no encontrado o no coincide con marca/modelo");
+        JOptionPane.showMessageDialog(null, "Repuesto con ID " + idRepuesto + " no encontrado o no coincide con marca/modelo");
         return null;
     }
 

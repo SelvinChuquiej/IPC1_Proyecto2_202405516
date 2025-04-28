@@ -73,7 +73,7 @@ public class Main {
     private VerProgresoAdminView verProgresoAdminView;
 
     public Main() {
-        
+
         File directorio = new File(CARPETA_DAT);
         if (!directorio.exists()) {
             directorio.mkdirs();
@@ -89,7 +89,7 @@ public class Main {
         clienteAutomovilController = new ClienteAutomovilController(registrarClienteController.clientes, vehiculoController.vehiculos, registrarClienteController, vehiculoController);
 
         verProgresoClienteController = new VerProgresoClienteController(registrarClienteController.clientes, vehiculoController.vehiculos, serviciosController.servicios);
-        ordenTrabajoController = new OrdenTrabajoController(registrarClienteController.empleados, serviciosController);
+        ordenTrabajoController = new OrdenTrabajoController(registrarClienteController.empleados, registrarClienteController.clientes, serviciosController);
 
         facturaController = new FacturaController(ordenTrabajoController);
         verProgesoAdminController = new VerProgesoAdminController(ordenTrabajoController);

@@ -4,6 +4,7 @@
  */
 package org.selvin.view;
 
+import javax.swing.JOptionPane;
 import org.selvin.main.Main;
 import org.selvin.main.Ventana;
 
@@ -127,6 +128,7 @@ public class ClienteMainView extends javax.swing.JFrame implements Ventana{
         // TODO add your handling code here:
         main.mostrarLoginView();
         this.ocultar();
+        JOptionPane.showMessageDialog(null, "Sesion Finalizada");
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnRegistrarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarVehiculoActionPerformed

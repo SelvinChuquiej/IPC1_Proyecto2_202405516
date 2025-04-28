@@ -86,6 +86,12 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
 
         jLabel2.setText("Servicio:");
 
+        cmbVehiculos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbVehiculosActionPerformed(evt);
+            }
+        });
+
         btnAñadir.setText("Añadir a Orden de Trabajo");
         btnAñadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,6 +269,10 @@ public class VerProgresoClienteView extends javax.swing.JFrame implements Ventan
         model.setRowCount(0);
         JOptionPane.showMessageDialog(this, "Todas las órdenes han sido procesadas", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnProcesarActionPerformed
+
+    private void cmbVehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbVehiculosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbVehiculosActionPerformed
 
     private VehiculoModel findVehicleInComboBox(String placa) {
         for (int i = 0; i < cmbVehiculos.getItemCount(); i++) {

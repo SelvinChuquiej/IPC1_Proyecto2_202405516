@@ -4,6 +4,7 @@
  */
 package org.selvin.view;
 
+import javax.swing.JOptionPane;
 import org.selvin.controller.VehiculoController;
 import org.selvin.main.Main;
 import org.selvin.main.Ventana;
@@ -18,7 +19,8 @@ public class VerVehiculosView extends javax.swing.JFrame implements Ventana {
      * Creates new form VerVehiculosView
      */
     private Main main;
-    private VehiculoController registrarVehiculoController; 
+    private VehiculoController registrarVehiculoController;
+
     public VerVehiculosView(Main main, VehiculoController registrarVehiculoController) {
         this.main = main;
         this.registrarVehiculoController = registrarVehiculoController;
@@ -27,8 +29,8 @@ public class VerVehiculosView extends javax.swing.JFrame implements Ventana {
 
     public VerVehiculosView() {
     }
-    
-    public void cargarVehiculos(){
+
+    public void cargarVehiculos() {
         registrarVehiculoController.cargarVehiculos(tblVehiculos);
     }
 
@@ -46,6 +48,7 @@ public class VerVehiculosView extends javax.swing.JFrame implements Ventana {
         btnRegresar = new javax.swing.JButton();
         btnAsc = new javax.swing.JButton();
         btnDes = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,23 +83,32 @@ public class VerVehiculosView extends javax.swing.JFrame implements Ventana {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Vehiculos");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1023, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnRegresar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(773, 773, 773)
                         .addComponent(btnAsc)
                         .addGap(18, 18, 18)
-                        .addComponent(btnDes)))
-                .addContainerGap(39, Short.MAX_VALUE))
+                        .addComponent(btnDes)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1079, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,9 +122,11 @@ public class VerVehiculosView extends javax.swing.JFrame implements Ventana {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnDes)
                             .addComponent(btnAsc))))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(35, 35, 35)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -128,12 +142,16 @@ public class VerVehiculosView extends javax.swing.JFrame implements Ventana {
         // TODO add your handling code here:
         registrarVehiculoController.ordenarPorPlacaAsc();
         cargarVehiculos();
+
+        JOptionPane.showMessageDialog(null, "Ordenados por Placa Ascendentemente");
     }//GEN-LAST:event_btnAscActionPerformed
 
     private void btnDesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesActionPerformed
         // TODO add your handling code here:
         registrarVehiculoController.ordenarPorPlacaDesc();
         cargarVehiculos();
+        JOptionPane.showMessageDialog(null, "Ordenados por Placa Descendentemente");
+
     }//GEN-LAST:event_btnDesActionPerformed
 
     /**
@@ -175,6 +193,7 @@ public class VerVehiculosView extends javax.swing.JFrame implements Ventana {
     private javax.swing.JButton btnAsc;
     private javax.swing.JButton btnDes;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblVehiculos;
     // End of variables declaration//GEN-END:variables

@@ -11,18 +11,18 @@ import java.time.LocalDateTime;
  *
  * @author Selvi
  */
-public class OrdenTrabajoModel implements Serializable{
+public class OrdenTrabajoModel implements Serializable {
 
     private int numeroOrden;
     private VehiculoModel vehiculo;
     private ClienteModel cliente;
     private ServicioModel servicio;
     private LocalDateTime fecha;
+    private LocalDateTime fechaFinalizacion;
+    private String estado;
     private EmpleadoModel mecanico;
-    private String estado;// espera, en servicio, listo
     private boolean procesado = false;
     private boolean pagado = false;
-    private LocalDateTime fechaFinalizacion;
 
     public OrdenTrabajoModel() {
     }

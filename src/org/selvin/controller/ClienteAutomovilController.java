@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -47,7 +48,7 @@ public class ClienteAutomovilController {
         cargarDatos();
     }
 
-    public void seleccionarArchivoTMCA(JTextField txtRuta) {
+    public boolean seleccionarArchivoTMCA(JTextField txtRuta) {
         JFileChooser dlg = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos TMCA (*.tmca)", "tmca");
         dlg.setFileFilter(filter);
@@ -56,7 +57,9 @@ public class ClienteAutomovilController {
             File archivo = dlg.getSelectedFile();
             txtRuta.setText(archivo.getPath());
             leerArchivoClienteAuto(archivo);
+            return true;
         }
+        return false;
     }
 
     public void leerArchivoClienteAuto(File archivo) {
@@ -97,6 +100,7 @@ public class ClienteAutomovilController {
                 if (!clienteExiste) {
                     boolean clienteAdd = registrarClienteController.addClientes(usuario, contraseña, dpiCliente, nombre);
                     if (clienteAdd) {
+                        JOptionPane.showMessageDialog(null, "Cliente registrado exitosamente: " + nombre);
                         VehiculoModel[] vehiculos = procesarLineaVehiculo(automoviles, dpiCliente);
                         for (VehiculoModel vehiculo : vehiculos) {
                             if (vehiculo != null) {
@@ -104,7 +108,10 @@ public class ClienteAutomovilController {
                             }
                         }
                         vehiculoController.guardarVehiculos();
+                        JOptionPane.showMessageDialog(null, "Vehículos agregados exitosamente para el cliente: " + nombre);
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "El cliente ya existe en el sistema: " + nombre);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

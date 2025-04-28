@@ -42,15 +42,11 @@ public class OrdenTrabajoThread extends Thread {
             ordenTrabajoModel.setProcesado(true);
 
             if ("espera".equals(ordenTrabajoModel.getEstado())) {
-                System.out.println("Vehículo en cola de espera: " + ordenTrabajoModel.getVehiculo().getPlaca());
                 mostrarEnCola();
-                // Esperar hasta que haya mecánico disponible
                 while (ordenTrabajoModel.getMecanico() == null && !Thread.currentThread().isInterrupted()) {
                     Thread.sleep(100);
                 }
-                // Si se asignó mecánico, proceder con el servicio
                 if (ordenTrabajoModel.getMecanico() != null) {
-                    System.out.println("Vehículo en servicio: " + ordenTrabajoModel.getVehiculo().getPlaca() + " - Servicio: " + ordenTrabajoModel.getServicio().getNombre());
                     if (ordenTrabajoModel.getServicio().getNombre().equalsIgnoreCase("Diagnóstico")) {
                         realizarDiagnostico();
                     } else {
@@ -58,7 +54,6 @@ public class OrdenTrabajoThread extends Thread {
                     }
                 }
             } else if ("en servicio".equals(ordenTrabajoModel.getEstado())) {
-                System.out.println("Vehículo en servicio: " + ordenTrabajoModel.getVehiculo().getPlaca() + " - Servicio: " + ordenTrabajoModel.getServicio().getNombre());
                 if (ordenTrabajoModel.getServicio().getNombre().equalsIgnoreCase("Diagnóstico")) {
                     realizarDiagnostico();
                 } else {
@@ -75,15 +70,13 @@ public class OrdenTrabajoThread extends Thread {
 
     private void mostrarEnCola() throws InterruptedException {
         String placa = ordenTrabajoModel.getVehiculo().getPlaca();
-        System.out.println("Mostrando progreso en cola para: " + placa);
-
         ordenTrabajoController.lockProgresoCola.lock();
         try {
             for (int i = 0; i <= 100 && !Thread.currentThread().isInterrupted(); i++) {
                 if (actualizacionProgreso != null) {
                     actualizacionProgreso.updateCola(placa, i);
                 }
-                Thread.sleep(110); // 11 segundos total para la espera
+                Thread.sleep(110);
             }
         } finally {
             ordenTrabajoController.lockProgresoCola.unlock();
@@ -92,9 +85,6 @@ public class OrdenTrabajoThread extends Thread {
 
     private void procesarServicioNormal() throws InterruptedException {
         String placa = ordenTrabajoModel.getVehiculo().getPlaca();
-        System.out.println("Iniciando servicio para: " + placa);
-
-        // Fase de servicio
         for (int i = 0; i <= 100 && !Thread.currentThread().isInterrupted(); i++) {
             if (actualizacionProgreso != null) {
                 actualizacionProgreso.updateEnServicio(placa, i);
@@ -102,7 +92,6 @@ public class OrdenTrabajoThread extends Thread {
             Thread.sleep(50);
         }
 
-        // Fase de listo
         for (int i = 0; i <= 100 && !Thread.currentThread().isInterrupted(); i++) {
             if (actualizacionProgreso != null) {
                 actualizacionProgreso.updateListo(placa, i);
@@ -110,23 +99,17 @@ public class OrdenTrabajoThread extends Thread {
             Thread.sleep(20);
         }
 
-        System.out.println("Servicio terminado para: " + placa);
         ordenTrabajoController.moverACarrosListos(ordenTrabajoModel);
         ordenTrabajoController.liberarMecanico(ordenTrabajoModel.getMecanico());
     }
 
     private void realizarDiagnostico() throws InterruptedException, InvocationTargetException {
-        System.out.println("Realizando diagnóstico para vehículo: " + ordenTrabajoModel.getVehiculo().getPlaca());
-
-        // Simular tiempo de diagnóstico
         Thread.sleep(2000);
 
-        // Obtener servicios disponibles para esta marca y modelo
         ServicioModel[] serviciosDisponibles = serviciosController.getServicios();
         ServicioModel[] serviciosCompatibles = filtrarServiciosCompatibles(serviciosDisponibles);
 
         if (serviciosCompatibles.length > 0) {
-            // Seleccionar un servicio aleatorio (excluyendo el diagnóstico)
             ServicioModel servicioDiagnosticado = seleccionarServicioAleatorio(serviciosCompatibles);
 
             System.out.println("Diagnóstico completado. Servicio recomendado: " + servicioDiagnosticado.getNombre());
@@ -135,7 +118,6 @@ public class OrdenTrabajoThread extends Thread {
                 int option = JOptionPane.showConfirmDialog(null, "Diagnóstico completo. Servicio recomendado:\n" + "Nombre: " + servicioDiagnosticado.getNombre() + "\n" + "¿Desea autorizar este servicio?", "Autorización de Servicio", JOptionPane.YES_NO_OPTION);
                 clienteAceptoServicio = (option == JOptionPane.YES_OPTION);
             } else {
-                // Para hilos secundarios, usar invokeLater
                 SwingUtilities.invokeAndWait(() -> {
                     int option = JOptionPane.showConfirmDialog(null, "Diagnóstico completo. Servicio recomendado:\n" + "Nombre: " + servicioDiagnosticado.getNombre() + "\n" + "¿Desea autorizar este servicio?", "Autorización de Servicio", JOptionPane.YES_NO_OPTION);
                     clienteAceptoServicio = (option == JOptionPane.YES_OPTION);

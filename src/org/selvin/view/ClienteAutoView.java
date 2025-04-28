@@ -4,6 +4,7 @@
  */
 package org.selvin.view;
 
+import javax.swing.JOptionPane;
 import org.selvin.controller.ClienteAutomovilController;
 import org.selvin.controller.RepuestosController;
 import org.selvin.main.Main;
@@ -56,6 +57,8 @@ public class ClienteAutoView extends javax.swing.JFrame implements Ventana {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Cliente Auto");
 
         btnAdd.setText("Agregar");
@@ -84,32 +87,29 @@ public class ClienteAutoView extends javax.swing.JFrame implements Ventana {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnRegresar)
-                        .addGap(74, 74, 74)
-                        .addComponent(jLabel1))
+                        .addComponent(btnRegresar))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3)
+                            .addComponent(jButton5)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnAdd)
                                 .addGap(36, 36, 36)
                                 .addComponent(txtRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton4)
-                            .addComponent(jButton5))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(31, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnRegresar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jLabel1)))
-                .addGap(30, 30, 30)
+                .addContainerGap()
+                .addComponent(btnRegresar)
+                .addGap(11, 11, 11)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
                     .addComponent(txtRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -119,7 +119,7 @@ public class ClienteAutoView extends javax.swing.JFrame implements Ventana {
                 .addComponent(jButton4)
                 .addGap(18, 18, 18)
                 .addComponent(jButton5)
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
@@ -133,7 +133,9 @@ public class ClienteAutoView extends javax.swing.JFrame implements Ventana {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        clienteAutomovilController.seleccionarArchivoTMCA(txtRuta);
+        if (clienteAutomovilController.seleccionarArchivoTMCA(txtRuta)) {
+            JOptionPane.showMessageDialog(null, "Clientes/Autos cargados corectamente");
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

@@ -130,6 +130,8 @@ public class VehiculoController {
     public void cargarVehiculos(JTable tblVehiculos) {
         dtm = (DefaultTableModel) tblVehiculos.getModel();
         dtm.setRowCount(0);
+        tblVehiculos.setRowHeight(120); 
+          tblVehiculos.getColumnModel().getColumn(3).setPreferredWidth(160); 
         tblVehiculos.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
         ClienteModel cliente = (ClienteModel) loginController.getUsuarioLogueado();
         for (VehiculoModel v : vehiculos) {
