@@ -6,8 +6,12 @@ package org.selvin.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -22,6 +26,8 @@ import org.selvin.view.RepuestosView;
  */
 public class RepuestosController {
 
+    private static final String ARCHIVO_REPUESTOS = "repuestos.dat";
+
     public RepuestoModel[] repuestos = new RepuestoModel[25];
     private RepuestosView repuestosView;
     private int id = 1;
@@ -29,6 +35,7 @@ public class RepuestosController {
     private DefaultTableModel dtm;
 
     public RepuestosController() {
+        cargarRepuestosDesdeArchivo();
     }
 
     public void seleccionarArchivoTMR(JTextField txtRuta) {
@@ -51,6 +58,7 @@ public class RepuestosController {
                     procesarLineaRepuesto(linea);
                 }
             }
+            guardarRepuestos();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,6 +103,42 @@ public class RepuestosController {
                 };
                 dtm.addRow(datos);
             }
+        }
+    }
+
+    public void cargarRepuestosDesdeArchivo() {
+        File archivo = new File(ARCHIVO_REPUESTOS);
+        if (archivo.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+                repuestos = (RepuestoModel[]) ois.readObject();
+                contRepuestos = 0;
+                int maxId = 0;
+
+                for (RepuestoModel r : repuestos) {
+                    if (r != null) {
+                        contRepuestos++;
+                        if (r.getId() > maxId) {
+                            maxId = r.getId();
+                        }
+                    }
+                }
+
+                id = maxId + 1;  // Actualiza el contador ID
+                System.out.println("Repuestos cargados correctamente desde " + ARCHIVO_REPUESTOS);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No se encontró el archivo de repuestos. Se iniciará vacío.");
+        }
+    }
+
+    public void guardarRepuestos() {  // Cambia el nombre para evitar confusión
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_REPUESTOS))) {
+            oos.writeObject(repuestos);
+            System.out.println("Repuestos guardados correctamente en " + ARCHIVO_REPUESTOS);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

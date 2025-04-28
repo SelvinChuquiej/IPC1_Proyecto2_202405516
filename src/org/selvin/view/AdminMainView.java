@@ -73,6 +73,11 @@ public class AdminMainView extends javax.swing.JFrame implements Ventana {
         });
 
         jButton5.setText("Progreso de Autos");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Reportes");
 
@@ -140,6 +145,12 @@ public class AdminMainView extends javax.swing.JFrame implements Ventana {
         main.mostrarClienteAutoView();
         this.ocultar();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        main.mostrarVerProgresoAdmin();
+        this.ocultar();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments

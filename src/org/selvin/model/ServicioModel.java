@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @author Selvi
  */
-public class ServicioModel {
+public class ServicioModel implements Serializable{
 
     private int id;
     private String nombre;

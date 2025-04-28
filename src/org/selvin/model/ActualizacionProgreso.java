@@ -4,6 +4,7 @@
  */
 package org.selvin.model;
 
+import java.io.Serializable;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
@@ -12,7 +13,7 @@ import javax.swing.SwingUtilities;
  *
  * @author Selvi
  */
-public class ActualizacionProgreso {
+public class ActualizacionProgreso implements Serializable {
 
     private JProgressBar pbrCola;
     private JProgressBar pbrEnServicio;

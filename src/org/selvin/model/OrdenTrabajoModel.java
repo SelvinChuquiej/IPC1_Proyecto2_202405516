@@ -4,13 +4,14 @@
  */
 package org.selvin.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author Selvi
  */
-public class OrdenTrabajoModel {
+public class OrdenTrabajoModel implements Serializable{
 
     private int numeroOrden;
     private VehiculoModel vehiculo;

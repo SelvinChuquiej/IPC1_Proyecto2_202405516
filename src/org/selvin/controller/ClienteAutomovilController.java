@@ -6,12 +6,18 @@ package org.selvin.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.selvin.main.Main;
 import org.selvin.model.ClienteModel;
 import org.selvin.model.VehiculoModel;
 import org.selvin.view.ClienteAutoView;
@@ -21,6 +27,8 @@ import org.selvin.view.ClienteAutoView;
  * @author Selvi
  */
 public class ClienteAutomovilController {
+
+    private static final String ARCHIVO_DATOS = Main.CARPETA_DAT + "clienteAutoDatos.dat";
 
     private ClienteAutoView clienteAutoView;
     private ClienteModel[] clientesExistentes;
@@ -35,6 +43,8 @@ public class ClienteAutomovilController {
 
         this.registrarClienteController = registrarClienteController;
         this.vehiculoController = vehiculoController;
+
+        cargarDatos();
     }
 
     public void seleccionarArchivoTMCA(JTextField txtRuta) {
@@ -57,6 +67,7 @@ public class ClienteAutomovilController {
                     procesarLineaClienteAuto(linea);
                 }
             }
+            guardarDatos();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,6 +103,7 @@ public class ClienteAutomovilController {
                                 vehiculoController.addVehiculos(vehiculo.getPlaca(), vehiculo.getMarca(), vehiculo.getModelo(), vehiculo.getRutaImagen(), dpiCliente);
                             }
                         }
+                        vehiculoController.guardarVehiculos();
                     }
                 }
             } catch (Exception e) {
@@ -142,4 +154,26 @@ public class ClienteAutomovilController {
             }
         }
     }
+
+    public void guardarDatos() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_DATOS))) {
+            oos.writeObject(clientesExistentes);
+            oos.writeObject(vehiculosExistentes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cargarDatos() {
+        File archivo = new File(ARCHIVO_DATOS);
+        if (archivo.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+                clientesExistentes = (ClienteModel[]) ois.readObject();
+                vehiculosExistentes = (VehiculoModel[]) ois.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

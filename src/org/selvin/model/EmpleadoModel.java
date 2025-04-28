@@ -4,11 +4,13 @@
  */
 package org.selvin.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Selvi
  */
-public class EmpleadoModel extends LoginModel {
+public class EmpleadoModel extends LoginModel implements Serializable {
 
     private String nombre;
     private String tipo; // administrador o mecanico

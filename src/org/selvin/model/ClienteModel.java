@@ -4,11 +4,13 @@
  */
 package org.selvin.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Selvi
  */
-public class ClienteModel extends LoginModel {
+public class ClienteModel extends LoginModel implements Serializable {
 
     private long dpi; //ID
     private String nombreCompleto;

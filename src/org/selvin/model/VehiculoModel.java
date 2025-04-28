@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @author Selvi
  */
-public class VehiculoModel {
+public class VehiculoModel implements Serializable{
 
     private String placa;
     private String marca;

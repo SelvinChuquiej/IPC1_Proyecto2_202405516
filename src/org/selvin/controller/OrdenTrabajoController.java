@@ -4,14 +4,18 @@
  */
 package org.selvin.controller;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.selvin.main.Main;
 import org.selvin.model.ActualizacionProgreso;
 import org.selvin.model.ClienteModel;
 import org.selvin.model.EmpleadoModel;
@@ -26,18 +30,19 @@ import org.selvin.model.VehiculoModel;
  */
 public class OrdenTrabajoController {
 
+    private static final String ARCHIVO_ORDENES = Main.CARPETA_DAT + "ordenes.dat";
     private DefaultTableModel dtm;
-    private EmpleadoModel[] mecanicos;
-    private OrdenTrabajoModel[] ordenes = new OrdenTrabajoModel[100];
+    public EmpleadoModel[] mecanicos;
+    public OrdenTrabajoModel[] ordenes = new OrdenTrabajoModel[100];
     public OrdenTrabajoModel[] vehiculosEnCola = new OrdenTrabajoModel[100];
-    private OrdenTrabajoModel[] vehiculosEnServicio = new OrdenTrabajoModel[100];
-    private OrdenTrabajoModel[] vehiculosListos = new OrdenTrabajoModel[100];
+    public OrdenTrabajoModel[] vehiculosEnServicio = new OrdenTrabajoModel[100];
+    public OrdenTrabajoModel[] vehiculosListos = new OrdenTrabajoModel[100];
 
-    private int countOrdenes = 0;
+    public int countOrdenes = 0;
     public int countEnCola = 0;
-    private int countEnServicio = 0;
-    private int countListos = 0;
-    private int idOrden = 1;
+    public int countEnServicio = 0;
+    public int countListos = 0;
+    public int idOrden = 1;
 
     private ServiciosController serviciosController;
     private ExecutorService executorService = Executors.newCachedThreadPool();
@@ -54,6 +59,7 @@ public class OrdenTrabajoController {
     public OrdenTrabajoController(EmpleadoModel[] mecanicos, ServiciosController serviciosController) {
         this.mecanicos = mecanicos;
         this.serviciosController = serviciosController;
+        cargarOrdenes();
     }
 
     public void mostrarInfo(JTable tblVehiculoServicio, VehiculoModel vehiculo, ServicioModel servicio) {
@@ -95,6 +101,7 @@ public class OrdenTrabajoController {
             ordenes[countOrdenes++] = newOrden;
             executorService.execute(new OrdenTrabajoThread(newOrden, this, serviciosController, actualizacionProgreso));
             mostrarSiguienteEnCola();
+            guardarOrdenes();
         } else {
             agregarAColaEspera(newOrden);
             if (countEnCola == 1) {
@@ -142,67 +149,6 @@ public class OrdenTrabajoController {
             actualizacionProgreso.updateEnServicio("", 0);
             actualizacionProgreso.updateListo(orden.getVehiculo().getPlaca(), 0);
         }
-    }
-
-    public boolean registrarPago(int numeroOrden) {
-        for (int i = 0; i < countListos; i++) {
-            if (vehiculosListos[i].getNumeroOrden() == numeroOrden) {
-                vehiculosListos[i].setPagado(true);
-                System.arraycopy(vehiculosListos, i + 1, vehiculosListos, i, countListos - i - 1);
-                countListos--;
-                vehiculosListos[countListos] = null;
-                System.out.println("Pago registrado para orden #" + numeroOrden + ". Vehículo puede ser retirado.");
-                return true;
-            }
-        }
-        System.out.println("No se encontró la orden #" + numeroOrden + " en carros listos.");
-        return false;
-    }
-
-    public void mostrarCarrosListosPendientes(JTable tabla) {
-        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-        model.setRowCount(0);
-
-        OrdenTrabajoModel[] pendientes = getCarrosListosPendientes();
-        for (OrdenTrabajoModel orden : pendientes) {
-            model.addRow(new Object[]{
-                orden.getNumeroOrden(),
-                orden.getVehiculo().getPlaca(),
-                orden.getVehiculo().getMarca(),
-                orden.getVehiculo().getModelo(),
-                orden.getServicio().getNombre(),
-                orden.getServicio().getPrecioTotal(),
-                orden.getFechaFinalizacion().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
-            });
-        }
-    }
-
-    public void procesarPago(JTable tabla) {
-        int filaSeleccionada = tabla.getSelectedRow();
-        if (filaSeleccionada >= 0) {
-            int numeroOrden = (int) tabla.getValueAt(filaSeleccionada, 0);
-            if (registrarPago(numeroOrden)) {
-                mostrarCarrosListosPendientes(tabla);
-                JOptionPane.showMessageDialog(null, "Pago registrado exitosamente");
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un vehículo de la lista", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-
-    public OrdenTrabajoModel[] getCarrosListosPendientes() {
-        OrdenTrabajoModel[] pendientes = new OrdenTrabajoModel[countListos];
-        int count = 0;
-
-        for (int i = 0; i < countListos; i++) {
-            if (!vehiculosListos[i].isPagado()) {
-                pendientes[count++] = vehiculosListos[i];
-            }
-        }
-
-        OrdenTrabajoModel[] resultado = new OrdenTrabajoModel[count];
-        System.arraycopy(pendientes, 0, resultado, 0, count);
-        return resultado;
     }
 
     private synchronized void agregarAColaEspera(OrdenTrabajoModel newOrden) {
@@ -257,6 +203,38 @@ public class OrdenTrabajoController {
             });
         } else if (countEnCola == 0 && actualizacionProgreso != null) {
             actualizacionProgreso.updateCola("", 0);
+        }
+    }
+
+    public void guardarOrdenes() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_ORDENES))) {
+            oos.writeObject(ordenes);  // Guardamos el arreglo de órdenes
+            oos.flush();
+            System.out.println("Órdenes guardadas correctamente.");
+        } catch (IOException e) {
+             e.printStackTrace();
+        }
+    }
+
+    // Método para deserializar las órdenes de trabajo
+    public void cargarOrdenes() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ARCHIVO_ORDENES))) {
+            OrdenTrabajoModel[] ordenesCargadas = (OrdenTrabajoModel[]) ois.readObject();
+            for (OrdenTrabajoModel orden : ordenesCargadas) {
+                if (orden != null) {
+                    ordenes[countOrdenes++] = orden;
+                    if (orden.getEstado().equals("en servicio")) {
+                        vehiculosEnServicio[countEnServicio++] = orden;
+                    } else if (orden.getEstado().equals("espera")) {
+                        vehiculosEnCola[countEnCola++] = orden;
+                    } else if (orden.getEstado().equals("listo")) {
+                        vehiculosListos[countListos++] = orden;
+                    }
+                }
+            }
+            System.out.println("Órdenes cargadas correctamente.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("No se encontró el archivo de orden. Se iniciará vacío.");
         }
     }
 }

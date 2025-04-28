@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @author Selvi
  */
-public class LoginModel {
+public class LoginModel implements Serializable {
 
     private String usuario;
     private String contrasena;

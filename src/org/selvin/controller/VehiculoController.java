@@ -7,7 +7,11 @@ package org.selvin.controller;
 import java.awt.Component;
 import java.awt.Image;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -20,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import org.selvin.main.Main;
 import org.selvin.model.ClienteModel;
 import org.selvin.model.VehiculoModel;
 
@@ -29,18 +34,22 @@ import org.selvin.model.VehiculoModel;
  */
 public class VehiculoController {
 
+    private static final String ARCHIVO_VEHICULOS = Main.CARPETA_DAT + "vehiculos.dat";
+
     public VehiculoModel[] vehiculos = new VehiculoModel[25];
     private RegistrarVehiculoView registrarAutoView;
     private LoginController loginController;
     private int countVehiculo = 0;
     private String IMAGES_DIR = "img_vehiculos/";
     private DefaultTableModel dtm;
+    private ClienteAutomovilController clienteAutomovilController;
 
     public VehiculoController() {
         File dir = new File(IMAGES_DIR);
         if (!dir.exists()) {
             dir.mkdirs();
         }
+        cargarVehiculos();
     }
 
     public boolean addVehiculos(String placa, String Marca, String modelo, String rutaImagen, long dpi) {
@@ -56,6 +65,7 @@ public class VehiculoController {
             String rutaImg = copiarImg(rutaImagen, placa);
             VehiculoModel vehiculo = new VehiculoModel(placa, Marca, modelo, rutaImagen, dpi);
             vehiculos[countVehiculo++] = vehiculo;
+            guardarVehiculos();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,5 +203,26 @@ public class VehiculoController {
             }
         }
         return true;
+    }
+
+    public void guardarVehiculos() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_VEHICULOS))) {
+            oos.writeObject(vehiculos);
+            oos.writeInt(countVehiculo); // Guardamos también el contador
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cargarVehiculos() {
+        File archivo = new File(ARCHIVO_VEHICULOS);
+        if (archivo.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+                vehiculos = (VehiculoModel[]) ois.readObject();
+                countVehiculo = ois.readInt();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

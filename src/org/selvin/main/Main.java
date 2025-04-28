@@ -4,17 +4,18 @@
  */
 package org.selvin.main;
 
+import java.io.File;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import org.selvin.controller.ClienteAutomovilController;
+import org.selvin.controller.FacturaController;
 import org.selvin.controller.LoginController;
 import org.selvin.controller.OrdenTrabajoController;
 import org.selvin.controller.VehiculoController;
 import org.selvin.controller.RegistrarClienteController;
 import org.selvin.controller.RepuestosController;
 import org.selvin.controller.ServiciosController;
+import org.selvin.controller.VerProgesoAdminController;
 import org.selvin.controller.VerProgresoClienteController;
 import org.selvin.view.AdminMainView;
 import org.selvin.view.ClienteAutoView;
@@ -28,6 +29,7 @@ import org.selvin.view.RepuestosView;
 import org.selvin.view.ServiciosVerView;
 import org.selvin.view.ServiciosView;
 import org.selvin.view.VerClienteAutoView;
+import org.selvin.view.VerProgresoAdminView;
 import org.selvin.view.VerProgresoClienteView;
 import org.selvin.view.VerVehiculosView;
 
@@ -40,8 +42,9 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    private JFrame ventanaActual;
+    public static final String CARPETA_DAT = "datos/";
 
+    private JFrame ventanaActual;
     private LoginController loginController;
     private RegistrarClienteController registrarClienteController;
     private VehiculoController vehiculoController;
@@ -50,6 +53,8 @@ public class Main {
     private ClienteAutomovilController clienteAutomovilController;
     private VerProgresoClienteController verProgresoClienteController;
     private OrdenTrabajoController ordenTrabajoController;
+    private FacturaController facturaController;
+    private VerProgesoAdminController verProgesoAdminController;
 
     private LoginView loginView;
     private RegistrarClienteView registrarClienteView;
@@ -65,8 +70,15 @@ public class Main {
     private VerClienteAutoView verClienteAutoView;
     private VerProgresoClienteView verProgresoClienteView;
     private FacturaView facturaView;
+    private VerProgresoAdminView verProgresoAdminView;
 
     public Main() {
+        
+        File directorio = new File(CARPETA_DAT);
+        if (!directorio.exists()) {
+            directorio.mkdirs();
+        }
+
         registrarClienteController = new RegistrarClienteController();
         loginController = new LoginController(registrarClienteController.clientes, registrarClienteController.empleados);
         vehiculoController = new VehiculoController();
@@ -78,6 +90,9 @@ public class Main {
 
         verProgresoClienteController = new VerProgresoClienteController(registrarClienteController.clientes, vehiculoController.vehiculos, serviciosController.servicios);
         ordenTrabajoController = new OrdenTrabajoController(registrarClienteController.empleados, serviciosController);
+
+        facturaController = new FacturaController(ordenTrabajoController);
+        verProgesoAdminController = new VerProgesoAdminController(ordenTrabajoController);
 
         loginView = new LoginView(this, loginController);
         registrarClienteView = new RegistrarClienteView(this, registrarClienteController);
@@ -98,7 +113,8 @@ public class Main {
 
         verProgresoClienteView = new VerProgresoClienteView(this, verProgresoClienteController, ordenTrabajoController);
 
-        facturaView = new FacturaView(this, ordenTrabajoController);
+        facturaView = new FacturaView(this, facturaController);
+        verProgresoAdminView = new VerProgresoAdminView(this, verProgesoAdminController);
         mostrarLoginView();
     }
 
@@ -178,6 +194,12 @@ public class Main {
         facturaView.cargar();
     }
 
+    public void mostrarVerProgresoAdmin() {
+        cambiarVentana(verProgresoAdminView);
+        verProgresoAdminView.setLocationRelativeTo(null);
+        verProgresoAdminView.cargarDatos();
+    }
+
     private void cambiarVentana(Ventana newVentana) {
         if (ventanaActual != null) {
             ventanaActual.setVisible(true);
@@ -189,5 +211,6 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
         SwingUtilities.invokeLater(() -> new Main());
+
     }
 }

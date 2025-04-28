@@ -6,13 +6,18 @@ package org.selvin.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.selvin.main.Main;
 import org.selvin.model.RepuestoModel;
 import org.selvin.model.ServicioModel;
 import org.selvin.view.ServiciosView;
@@ -22,6 +27,8 @@ import org.selvin.view.ServiciosView;
  * @author Selvi
  */
 public class ServiciosController {
+
+    private static final String ARCHIVO_SERVICIOS = Main.CARPETA_DAT + "servicios.dat";
 
     public ServicioModel[] servicios = new ServicioModel[25];
     private ServiciosView serviciosView;
@@ -34,6 +41,7 @@ public class ServiciosController {
     public ServiciosController(RepuestosController repuestosController, RepuestoModel[] repuestosExistentes) {
         this.repuestosController = repuestosController;
         this.repuestosExistentes = repuestosExistentes;
+        cargarServiciosDesdeArchivo();
     }
 
     public void seleccionarArchivoTMS(JTextField txtRuta) {
@@ -56,6 +64,7 @@ public class ServiciosController {
                     procesarLineaServicio(linea);
                 }
             }
+            guardarServicios();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -155,5 +164,41 @@ public class ServiciosController {
         ServicioModel[] result = new ServicioModel[contServicios];
         System.arraycopy(servicios, 0, result, 0, contServicios);
         return result;
+    }
+
+    public void cargarServiciosDesdeArchivo() {
+        File archivo = new File(ARCHIVO_SERVICIOS);
+        if (archivo.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+                servicios = (ServicioModel[]) ois.readObject();
+                contServicios = 0;
+                int maxId = 0;
+
+                for (ServicioModel s : servicios) {
+                    if (s != null) {
+                        contServicios++;
+                        if (s.getId() > maxId) {
+                            maxId = s.getId();
+                        }
+                    }
+                }
+
+                id = maxId + 1;  // Actualiza el contador ID
+                System.out.println("Servicios cargados correctamente desde " + ARCHIVO_SERVICIOS);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No se encontró el archivo de servicios. Se iniciará vacío.");
+        }
+    }
+
+    public void guardarServicios() {  // Cambia el nombre para evitar confusión
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_SERVICIOS))) {
+            oos.writeObject(servicios);
+            System.out.println("Servicios guardados correctamente en " + ARCHIVO_SERVICIOS);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

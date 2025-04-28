@@ -4,9 +4,7 @@
  */
 package org.selvin.view;
 
-import org.selvin.controller.FacturaController;
-import javax.swing.JOptionPane;
-import org.selvin.controller.OrdenTrabajoController;
+import org.selvin.controller.VerProgesoAdminController;
 import org.selvin.main.Main;
 import org.selvin.main.Ventana;
 
@@ -14,25 +12,25 @@ import org.selvin.main.Ventana;
  *
  * @author Selvi
  */
-public class FacturaView extends javax.swing.JFrame implements Ventana {
+public class VerProgresoAdminView extends javax.swing.JFrame implements Ventana {
 
     /**
-     * Creates new form FacturaView
+     * Creates new form VerProgresoAdminView
      */
     private Main main;
-    private FacturaController facturaController;
+    private VerProgesoAdminController verProgesoAdminController;
 
-    public FacturaView() {
-    }
-
-    public FacturaView(Main main, FacturaController facturaController) {
+    public VerProgresoAdminView(Main main, VerProgesoAdminController verProgesoAdminController) {
         this.main = main;
-        this.facturaController = facturaController;
+        this.verProgesoAdminController = verProgesoAdminController;
         initComponents();
     }
 
-    public void cargar() {
-        facturaController.mostrarCarrosListosPendientes(tblOrdenes);
+    public VerProgresoAdminView() {
+    }
+
+    public void cargarDatos() {
+        verProgesoAdminController.mostrarTodasLasOrdenes(tblProgresoAdmin);
     }
 
     /**
@@ -46,8 +44,7 @@ public class FacturaView extends javax.swing.JFrame implements Ventana {
 
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblOrdenes = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        tblProgresoAdmin = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,48 +55,38 @@ public class FacturaView extends javax.swing.JFrame implements Ventana {
             }
         });
 
-        tblOrdenes.setModel(new javax.swing.table.DefaultTableModel(
+        tblProgresoAdmin.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "No. Orden", "Placa", "Marca", "Modelo", "Nombe", "Precio Total", "Fecha"
+                "No. Orden", "Placa", "Marca", "Modelo", "Cliente", "Servicio", "Precio", "Estado", "Fecha"
             }
         ));
-        jScrollPane1.setViewportView(tblOrdenes);
-
-        jButton2.setText("Pagar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        jScrollPane1.setViewportView(tblProgresoAdmin);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 39, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1)
-                .addGap(59, 59, 59)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addGap(33, 33, 33)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         pack();
@@ -107,24 +94,9 @@ public class FacturaView extends javax.swing.JFrame implements Ventana {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        main.mostrarClienteMainView();
+        main.mostrarAdminMainView();
         this.ocultar();
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        int selectedRow = tblOrdenes.getSelectedRow();
-        if (selectedRow >= 0) {
-            int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea registrar el pago de esta orden?", "Confirmar Pago", JOptionPane.YES_NO_OPTION);
-
-            if (confirm == JOptionPane.YES_OPTION) {
-                facturaController.procesarPago(tblOrdenes);
-                cargar();
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Por favor seleccione una orden de la tabla", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -143,31 +115,29 @@ public class FacturaView extends javax.swing.JFrame implements Ventana {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FacturaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VerProgresoAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FacturaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VerProgresoAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FacturaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VerProgresoAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FacturaView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VerProgresoAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FacturaView().setVisible(true);
+                new VerProgresoAdminView().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblOrdenes;
+    private javax.swing.JTable tblProgresoAdmin;
     // End of variables declaration//GEN-END:variables
-
     @Override
     public void mostrar() {
         setVisible(true);
