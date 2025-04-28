@@ -33,7 +33,7 @@ public class OrdenTrabajoModel {
         this.servicio = servicio;
         this.fecha = fecha;
         this.mecanico = mecanico;
-        this.estado = "espera";
+        this.estado = (mecanico != null) ? "en servicio" : "espera";
     }
 
     public void finalizarOrden() {
@@ -87,6 +87,11 @@ public class OrdenTrabajoModel {
 
     public void setMecanico(EmpleadoModel mecanico) {
         this.mecanico = mecanico;
+        if (mecanico != null) {
+            this.estado = "en servicio";
+        } else {
+            this.estado = "espera";
+        }
     }
 
     public String getEstado() {

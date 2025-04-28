@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javax.swing.JLabel;
+import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.selvin.model.ActualizacionProgreso;
 import org.selvin.model.ClienteModel;
 import org.selvin.model.EmpleadoModel;
 import org.selvin.model.OrdenTrabajoModel;
@@ -29,14 +29,27 @@ public class OrdenTrabajoController {
     private DefaultTableModel dtm;
     private EmpleadoModel[] mecanicos;
     private OrdenTrabajoModel[] ordenes = new OrdenTrabajoModel[100];
-    private OrdenTrabajoModel[] colaEspera = new OrdenTrabajoModel[100];
-    private OrdenTrabajoModel[] carrosListos = new OrdenTrabajoModel[100];
+    public OrdenTrabajoModel[] vehiculosEnCola = new OrdenTrabajoModel[100];
+    private OrdenTrabajoModel[] vehiculosEnServicio = new OrdenTrabajoModel[100];
+    private OrdenTrabajoModel[] vehiculosListos = new OrdenTrabajoModel[100];
+
     private int countOrdenes = 0;
-    private int countColaEspera = 0;
-    private int countCarrosListos = 0;
+    public int countEnCola = 0;
+    private int countEnServicio = 0;
+    private int countListos = 0;
     private int idOrden = 1;
+
     private ServiciosController serviciosController;
     private ExecutorService executorService = Executors.newCachedThreadPool();
+    private ActualizacionProgreso actualizacionProgreso;
+
+    private boolean mostrandoProgresoCola = false;
+
+    public final ReentrantLock lockProgresoCola = new ReentrantLock();
+
+    public void setActualizacionProgreso(ActualizacionProgreso actualizacionProgreso) {
+        this.actualizacionProgreso = actualizacionProgreso;
+    }
 
     public OrdenTrabajoController(EmpleadoModel[] mecanicos, ServiciosController serviciosController) {
         this.mecanicos = mecanicos;
@@ -60,50 +73,39 @@ public class OrdenTrabajoController {
         return vehiculo.getMarca().equalsIgnoreCase(servicio.getMarca()) && vehiculo.getModelo().equalsIgnoreCase(servicio.getModelo());
     }
 
-    public void crearOrden(VehiculoModel vehiculo, ServicioModel servicio) {
+    public synchronized void crearOrden(VehiculoModel vehiculo, ServicioModel servicio) {
         if (verficarMarcaModelo(vehiculo, servicio)) {
             ClienteModel cliente = (ClienteModel) LoginController.getUsuarioLogueado();
             OrdenTrabajoModel newOrden = new OrdenTrabajoModel(idOrden++, vehiculo, cliente, servicio, LocalDateTime.now(), null);
-
             cliente.setServiciosRealizados(cliente.getServiciosRealizados() + 1);
+
             if (cliente.getServiciosRealizados() >= 4 && !cliente.getTipoCliente().equalsIgnoreCase("ORO")) {
                 cliente.setTipoCliente("ORO");
                 System.out.println("Cliente " + cliente.getNombreCompleto() + " ahora es tipo ORO.");
             }
-
             asignarMecanico(newOrden);
         }
     }
 
-    public void asignarMecanico(OrdenTrabajoModel newOrden) {
+    public synchronized void asignarMecanico(OrdenTrabajoModel newOrden) {
         EmpleadoModel mecanico = mecanicoDisponible();
         if (mecanico != null) {
             newOrden.setMecanico(mecanico);
-            mecanico.setEstado("Ocupado");
+            newOrden.setEstado("en servicio");
             ordenes[countOrdenes++] = newOrden;
-            new OrdenTrabajoThread(newOrden, this, serviciosController).start();
+            executorService.execute(new OrdenTrabajoThread(newOrden, this, serviciosController, actualizacionProgreso));
+            mostrarSiguienteEnCola();
         } else {
             agregarAColaEspera(newOrden);
-        }
-    }
-
-    private void agregarAColaEspera(OrdenTrabajoModel newOrden) {
-        if (countColaEspera < colaEspera.length) {
-            if (newOrden.getCliente().getTipoCliente().equalsIgnoreCase("ORO")) {
-                System.arraycopy(colaEspera, 0, colaEspera, 1, countColaEspera);
-                colaEspera[0] = newOrden;
+            if (countEnCola == 1) {
+                executorService.execute(new OrdenTrabajoThread(newOrden, this, serviciosController, actualizacionProgreso));
             } else {
-                colaEspera[countColaEspera] = newOrden;
+                System.out.println("Vehículo en cola de espera: " + newOrden.getVehiculo().getPlaca());
             }
-            countColaEspera++;
-
-            System.out.println("Vehículo en cola de espera: " + newOrden.getVehiculo().getPlaca());
-        } else {
-            System.out.println("La cola de espera ha alcanzado su capacidad máxima");
         }
     }
 
-    public EmpleadoModel mecanicoDisponible() {
+    public synchronized EmpleadoModel mecanicoDisponible() {
         for (EmpleadoModel mecanico : mecanicos) {
             if (mecanico != null && mecanico.getTipo().equalsIgnoreCase("Mecanico") && mecanico.getEstado().equalsIgnoreCase("Libre")) {
                 mecanico.setEstado("Ocupado");
@@ -113,44 +115,42 @@ public class OrdenTrabajoController {
         return null;
     }
 
-    public void liberarMecanico(EmpleadoModel mecanico) {
+    public synchronized void liberarMecanico(EmpleadoModel mecanico) {
         if (mecanico != null) {
             mecanico.setEstado("Libre");
             asignarSiguienteDeCola();
+            mostrarSiguienteEnCola();
         }
     }
 
-    private void asignarSiguienteDeCola() {
-        if (countColaEspera > 0) {
-            OrdenTrabajoModel siguiente = colaEspera[0];
-            System.arraycopy(colaEspera, 1, colaEspera, 0, countColaEspera - 1);
-            colaEspera[--countColaEspera] = null;
-
-            asignarMecanico(siguiente);
-        }
-    }
-
-    public void moverACarrosListos(OrdenTrabajoModel orden) {
+    public synchronized void moverACarrosListos(OrdenTrabajoModel orden) {
         orden.finalizarOrden();
         orden.setProcesado(true);
-        if (countCarrosListos < carrosListos.length) {
-            carrosListos[countCarrosListos++] = orden;
-            System.out.println("Vehículo " + orden.getVehiculo().getPlaca() + " movido a carros listos. Esperando pago.");
-        } else {
-            System.out.println("No hay espacio para más carros listos.");
+
+        for (int i = 0; i < countEnServicio; i++) {
+            if (vehiculosEnServicio[i] == orden) {
+                System.arraycopy(vehiculosEnServicio, i + 1, vehiculosEnServicio, i, countEnServicio - i - 1);
+                countEnServicio--;
+                vehiculosEnServicio[countEnServicio] = null;
+                break;
+            }
+        }
+
+        vehiculosListos[countListos++] = orden;
+
+        if (actualizacionProgreso != null) {
+            actualizacionProgreso.updateEnServicio("", 0);
+            actualizacionProgreso.updateListo(orden.getVehiculo().getPlaca(), 0);
         }
     }
 
     public boolean registrarPago(int numeroOrden) {
-        for (int i = 0; i < countCarrosListos; i++) {
-            if (carrosListos[i].getNumeroOrden() == numeroOrden) {
-                carrosListos[i].setPagado(true);
-
-                // Eliminar de la lista de carros listos
-                System.arraycopy(carrosListos, i + 1, carrosListos, i, countCarrosListos - i - 1);
-                countCarrosListos--;
-                carrosListos[countCarrosListos] = null;
-
+        for (int i = 0; i < countListos; i++) {
+            if (vehiculosListos[i].getNumeroOrden() == numeroOrden) {
+                vehiculosListos[i].setPagado(true);
+                System.arraycopy(vehiculosListos, i + 1, vehiculosListos, i, countListos - i - 1);
+                countListos--;
+                vehiculosListos[countListos] = null;
                 System.out.println("Pago registrado para orden #" + numeroOrden + ". Vehículo puede ser retirado.");
                 return true;
             }
@@ -191,12 +191,12 @@ public class OrdenTrabajoController {
     }
 
     public OrdenTrabajoModel[] getCarrosListosPendientes() {
-        OrdenTrabajoModel[] pendientes = new OrdenTrabajoModel[countCarrosListos];
+        OrdenTrabajoModel[] pendientes = new OrdenTrabajoModel[countListos];
         int count = 0;
 
-        for (int i = 0; i < countCarrosListos; i++) {
-            if (!carrosListos[i].isPagado()) {
-                pendientes[count++] = carrosListos[i];
+        for (int i = 0; i < countListos; i++) {
+            if (!vehiculosListos[i].isPagado()) {
+                pendientes[count++] = vehiculosListos[i];
             }
         }
 
@@ -205,45 +205,58 @@ public class OrdenTrabajoController {
         return resultado;
     }
 
-    public void actualizarPlacas(JLabel lblCola, JLabel lblServicio, JLabel lblListo) {
-        // Placas en cola
-        StringBuilder placasCola = new StringBuilder("En cola: ");
-        for (int i = 0; i < countColaEspera; i++) {
-            if (colaEspera[i] != null) {
-                placasCola.append(colaEspera[i].getVehiculo().getPlaca());
-                if (i < countColaEspera - 1) {
-                    placasCola.append(", ");
-                }
+    private synchronized void agregarAColaEspera(OrdenTrabajoModel newOrden) {
+        if (countEnCola < vehiculosEnCola.length) {
+            if (newOrden.getCliente().getTipoCliente().equalsIgnoreCase("ORO")) {
+                System.arraycopy(vehiculosEnCola, 0, vehiculosEnCola, 1, countEnCola);
+                vehiculosEnCola[0] = newOrden;
+            } else {
+                vehiculosEnCola[countEnCola] = newOrden;
             }
-        } 
-        lblCola.setText(placasCola.length() == 8 ? "En cola: Ninguno" : placasCola.toString());
+            countEnCola++;
+            newOrden.setEstado("espera");
+        }
+    }
 
-        // Placas en servicio
-        StringBuilder placasServicio = new StringBuilder("En servicio: ");
-        int enServicio = 0;
-        for (int i = 0; i < countOrdenes; i++) {
-            if (ordenes[i] != null && ordenes[i].getEstado().equals("en servicio")) {
-                placasServicio.append(ordenes[i].getVehiculo().getPlaca());
-                enServicio++;
-                if (enServicio < countOrdenes) {
-                    placasServicio.append(", ");
-                }
+    private synchronized void asignarSiguienteDeCola() {
+        if (countEnCola > 0) {
+            OrdenTrabajoModel siguiente = vehiculosEnCola[0];
+            System.arraycopy(vehiculosEnCola, 1, vehiculosEnCola, 0, countEnCola - 1);
+            vehiculosEnCola[--countEnCola] = null;
+            asignarMecanico(siguiente);
+        }
+    }
+
+    private synchronized void removerDeCola(OrdenTrabajoModel orden) {
+        for (int i = 0; i < countEnCola; i++) {
+            if (vehiculosEnCola[i] == orden) {
+                System.arraycopy(vehiculosEnCola, i + 1, vehiculosEnCola, i, countEnCola - i - 1);
+                countEnCola--;
+                vehiculosEnCola[countEnCola] = null;
+                break;
             }
         }
-        lblServicio.setText(enServicio == 0 ? "En servicio: Ninguno" : placasServicio.toString());
+    }
 
-        // Placas listas
-        StringBuilder placasListo = new StringBuilder("Listos: ");
-        int listosCount = 0;
-        for (int i = 0; i < countCarrosListos; i++) {
-            if (carrosListos[i] != null && !carrosListos[i].isPagado()) {
-                placasListo.append(carrosListos[i].getVehiculo().getPlaca());
-                listosCount++;
-                if (i < countCarrosListos - 1) {
-                    placasListo.append(", ");
+    private synchronized void mostrarSiguienteEnCola() {
+        if (countEnCola > 0 && !mostrandoProgresoCola) {
+            mostrandoProgresoCola = true;
+            OrdenTrabajoModel siguiente = vehiculosEnCola[0];
+            executorService.execute(new OrdenTrabajoThread(siguiente, this, serviciosController, actualizacionProgreso) {
+                @Override
+                public void run() {
+                    try {
+                        super.run();
+                    } finally {
+                        synchronized (OrdenTrabajoController.this) {
+                            mostrandoProgresoCola = false;
+                            mostrarSiguienteEnCola();
+                        }
+                    }
                 }
-            }
+            });
+        } else if (countEnCola == 0 && actualizacionProgreso != null) {
+            actualizacionProgreso.updateCola("", 0);
         }
-        lblListo.setText(listosCount == 0 ? "Listos: Ninguno" : placasListo.toString());
     }
 }

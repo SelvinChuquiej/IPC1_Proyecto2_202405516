@@ -5,6 +5,8 @@
 package org.selvin.main;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import org.selvin.controller.ClienteAutomovilController;
 import org.selvin.controller.LoginController;
@@ -170,12 +172,12 @@ public class Main {
         verProgresoClienteView.cargarDatos();
     }
 
-    public void mostrarFactura(){
+    public void mostrarFactura() {
         cambiarVentana(facturaView);
         facturaView.setLocationRelativeTo(null);
         facturaView.cargar();
     }
-    
+
     private void cambiarVentana(Ventana newVentana) {
         if (ventanaActual != null) {
             ventanaActual.setVisible(true);

@@ -29,13 +29,11 @@ public class RegistrarClienteController {
             admin.setContrasena("admin");
             empleados[countEmpleado++] = admin;
 
-            String[] nombresMecanicos = {"Carlos", "Luisa"};
-            for (int i = 0; i < 2; i++) {
-                EmpleadoModel mecanico = new EmpleadoModel(nombresMecanicos[i], "Mecanico", "Libre");
-                mecanico.setUsuario("mecanico" + i);
-                mecanico.setContrasena("mecanico" + i);
-                empleados[countEmpleado++] = mecanico;
-            }
+            EmpleadoModel mecanico = new EmpleadoModel("Carlos", "Mecanico", "Libre");
+            mecanico.setUsuario("mecanico");
+            mecanico.setContrasena("mecanico");
+            empleados[countEmpleado++] = mecanico;
+
         }
     }
 

@@ -22,45 +22,97 @@ public class OrdenTrabajoThread extends Thread {
     private OrdenTrabajoModel ordenTrabajoModel;
     private OrdenTrabajoController ordenTrabajoController;
     private ServiciosController serviciosController;
+    private ActualizacionProgreso actualizacionProgreso;
     private boolean clienteAceptoServicio = false;
     private Random random = new Random();
 
-    public OrdenTrabajoThread(OrdenTrabajoModel ordenTrabajoModel, OrdenTrabajoController ordenTrabajoController, ServiciosController serviciosController) {
+    public OrdenTrabajoThread(OrdenTrabajoModel ordenTrabajoModel, OrdenTrabajoController ordenTrabajoController, ServiciosController serviciosController, ActualizacionProgreso actualizacionProgreso) {
         this.ordenTrabajoModel = ordenTrabajoModel;
         this.ordenTrabajoController = ordenTrabajoController;
         this.serviciosController = serviciosController;
+        this.actualizacionProgreso = actualizacionProgreso;
     }
 
     @Override
     public void run() {
         try {
-            // Verificar si ya fue procesado
             if (ordenTrabajoModel.isProcesado()) {
-                System.out.println("Orden ya procesada, ignorando: " + ordenTrabajoModel.getNumeroOrden());
                 return;
             }
+            ordenTrabajoModel.setProcesado(true);
 
-            ordenTrabajoModel.setProcesado(true); // Marcar como procesado inmediatamente
-
-            if (ordenTrabajoModel.getServicio().getNombre().equalsIgnoreCase("Diagnóstico")) {
-                realizarDiagnostico();
-            } else {
-                realizarServicioNormal();
+            if ("espera".equals(ordenTrabajoModel.getEstado())) {
+                System.out.println("Vehículo en cola de espera: " + ordenTrabajoModel.getVehiculo().getPlaca());
+                mostrarEnCola();
+                // Esperar hasta que haya mecánico disponible
+                while (ordenTrabajoModel.getMecanico() == null && !Thread.currentThread().isInterrupted()) {
+                    Thread.sleep(100);
+                }
+                // Si se asignó mecánico, proceder con el servicio
+                if (ordenTrabajoModel.getMecanico() != null) {
+                    System.out.println("Vehículo en servicio: " + ordenTrabajoModel.getVehiculo().getPlaca() + " - Servicio: " + ordenTrabajoModel.getServicio().getNombre());
+                    if (ordenTrabajoModel.getServicio().getNombre().equalsIgnoreCase("Diagnóstico")) {
+                        realizarDiagnostico();
+                    } else {
+                        procesarServicioNormal();
+                    }
+                }
+            } else if ("en servicio".equals(ordenTrabajoModel.getEstado())) {
+                System.out.println("Vehículo en servicio: " + ordenTrabajoModel.getVehiculo().getPlaca() + " - Servicio: " + ordenTrabajoModel.getServicio().getNombre());
+                if (ordenTrabajoModel.getServicio().getNombre().equalsIgnoreCase("Diagnóstico")) {
+                    realizarDiagnostico();
+                } else {
+                    procesarServicioNormal();
+                }
             }
-
-            if (!ordenTrabajoModel.getServicio().getNombre().equalsIgnoreCase("Diagnóstico") || (ordenTrabajoModel.getServicio().getNombre().equalsIgnoreCase("Diagnóstico") && !clienteAceptoServicio)) {
-                System.out.println("Vehículo listo para entrega: " + ordenTrabajoModel.getVehiculo().getPlaca());
-                Thread.sleep(2000);
-            }
-
-            ordenTrabajoController.moverACarrosListos(ordenTrabajoModel);
-            ordenTrabajoController.liberarMecanico(ordenTrabajoModel.getMecanico());
 
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         } catch (InvocationTargetException ex) {
             Logger.getLogger(OrdenTrabajoThread.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void mostrarEnCola() throws InterruptedException {
+        String placa = ordenTrabajoModel.getVehiculo().getPlaca();
+        System.out.println("Mostrando progreso en cola para: " + placa);
+
+        ordenTrabajoController.lockProgresoCola.lock();
+        try {
+            for (int i = 0; i <= 100 && !Thread.currentThread().isInterrupted(); i++) {
+                if (actualizacionProgreso != null) {
+                    actualizacionProgreso.updateCola(placa, i);
+                }
+                Thread.sleep(110); // 11 segundos total para la espera
+            }
+        } finally {
+            ordenTrabajoController.lockProgresoCola.unlock();
+        }
+    }
+
+    private void procesarServicioNormal() throws InterruptedException {
+        String placa = ordenTrabajoModel.getVehiculo().getPlaca();
+        System.out.println("Iniciando servicio para: " + placa);
+
+        // Fase de servicio
+        for (int i = 0; i <= 100 && !Thread.currentThread().isInterrupted(); i++) {
+            if (actualizacionProgreso != null) {
+                actualizacionProgreso.updateEnServicio(placa, i);
+            }
+            Thread.sleep(50);
+        }
+
+        // Fase de listo
+        for (int i = 0; i <= 100 && !Thread.currentThread().isInterrupted(); i++) {
+            if (actualizacionProgreso != null) {
+                actualizacionProgreso.updateListo(placa, i);
+            }
+            Thread.sleep(20);
+        }
+
+        System.out.println("Servicio terminado para: " + placa);
+        ordenTrabajoController.moverACarrosListos(ordenTrabajoModel);
+        ordenTrabajoController.liberarMecanico(ordenTrabajoModel.getMecanico());
     }
 
     private void realizarDiagnostico() throws InterruptedException, InvocationTargetException {
@@ -93,7 +145,7 @@ public class OrdenTrabajoThread extends Thread {
             if (clienteAceptoServicio) {
                 System.out.println("Cliente ha aceptado el servicio recomendado.");
                 ordenTrabajoModel.setServicio(servicioDiagnosticado);
-                realizarServicioNormal();
+                procesarServicioNormal();
             } else {
                 System.out.println("Cliente ha rechazado el servicio recomendado.");
                 finalizarOrden();
@@ -121,11 +173,5 @@ public class OrdenTrabajoThread extends Thread {
 
     private ServicioModel seleccionarServicioAleatorio(ServicioModel[] servicios) {
         return servicios[random.nextInt(servicios.length)];
-    }
-
-    private void realizarServicioNormal() throws InterruptedException {
-        System.out.println("Vehículo en servicio: " + ordenTrabajoModel.getVehiculo().getPlaca() + " - Servicio: " + ordenTrabajoModel.getServicio().getNombre());
-        Thread.sleep(11000);
-        System.out.println("Vehículo servicio terminado: " + ordenTrabajoModel.getVehiculo().getPlaca());
     }
 }
